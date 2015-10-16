@@ -7,17 +7,63 @@ package src;
 */
 
 
-//import java.awt.Point;
-
+import java.awt.Point;
+//import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
  * @author hyun
  */
-public class Balls {
-    private int x;
-    private int y;
+public class Balls extends Point{
+    private LinkedList<Point> ListPoint ;
     
+    public Balls(){
+    }
+  
+    
+    public Balls(Point point){
+        this.addBall(point);
+    }
+
+    public void addBall(Point point){
+        this.ListPoint.add(point);
+    }
+    
+    public void removeBall(Point point){
+        this.ListPoint.remove(point);
+    }
+    void translateBalls (int dx, int dy){
+        int index=0;
+         while(!(index == this.getSizeList())){
+             this.ListPoint.get(index).translate(dx,dy);
+             index ++;
+         }
+    }
+     
+    public int getSizeList(){
+        return ListPoint.size();
+    }
+    
+    @Override
+    public String toString(){
+        int index=0;
+        String buff="";
+        while(!(index == this.getSizeList())){
+        buff =buff + "La position de la balle" + index+ " est (" + ListPoint.get(index).getX() + ", " + ListPoint.get(index).getX() + ") \n";
+        index ++;
+        }
+        return buff;
+    }
+    
+    void reInit(){
+        int index =0;
+        while(!(index == this.getSizeList())){
+            //this.ListPoint.get(index).
+        }
+    }
+    
+    /*
     public Balls(){
         this.x=0;
         this.y=0;
@@ -65,11 +111,7 @@ public class Balls {
         this.x=balls.x;
         this.y=balls.y;
     }
-    /**
-     *
-     * @param obj
-     * @return
-     */
+    
     @Override
     public boolean equals(Object obj){
         boolean result = false;
@@ -81,18 +123,10 @@ public class Balls {
         }
         return result;
     }
-    /*if (! (obj instanceof Point2D))
-     return false;
-     Point2D p = (Point2D) obj;
-     return x == p.getX() && y == p.getY();
-    void translate(int dx, int dy){
-           this.x= this.x + dx;
-           this.y= this.y + dy;
-    } */
-    void reInit(){
-    }
+   
     
     public String toString(){
         return "La position de la balle est (" + this.x + ", " + this.y + ")";
-    }
+    } */
+    
 }
