@@ -25,5 +25,15 @@ public class TestBalls {
         balls.addBall(point4);
         balls.addBall(point5);
         System.out.println(balls.toString());
+        System.out.println(balls.toString2());
+        
+        balls.translateBalls(2, 3);
+        System.out.println(balls.toString());
+        System.out.println(balls.toString2());
+        
+        balls.reInit();
+        System.out.println(balls.toString());
+        System.out.println(balls.toString2());
+       
     }
 }

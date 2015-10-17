@@ -8,26 +8,21 @@ package src;
 
 
 import java.awt.Point;
-//import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Iterator;
+//import java.util.Iterator;
 /**
  *
  * @author hyun
  */
 public class Balls extends Point{
-    private LinkedList<Point> ListPoint ;
-    //protected Iterator ListIterator = ListPoint.iterator();
+    private final LinkedList<Point> ListPoint ;
+    private final LinkedList<Point> LInitial ;
+    //Iterator ListIterator = ListPoint.iterator();
     
     public Balls(){
         this.ListPoint= new LinkedList<>();
+        this.LInitial= new LinkedList<>();
     }
-    
-    /*public Balls(Balls balls){
-        while (ListIterator.hasNext()){
-            this.ListPoint.addLast(balls.getListPoint().getFirst());
-        }
-    } */
     
     public LinkedList<Point> getListPoint(){
         return this.ListPoint;
@@ -35,15 +30,19 @@ public class Balls extends Point{
     
     public void addBall(Point point){
         this.ListPoint.add(point);
+        Point tmp = new Point(point);
+        this.LInitial.add(tmp);
     }
     
     public void removeBall(Point point){
         this.ListPoint.remove(point);
     }
+    
     void translateBalls (int dx, int dy){
         int index=0;
-         while(!(index == this.getSizeList()-1)){
+         while(!(index == this.getSizeList())){
              this.ListPoint.get(index).translate(dx,dy);
+             //this.LInitial.get(index).translate(-dx, -dy);
              index ++;
          }
     }
@@ -63,10 +62,22 @@ public class Balls extends Point{
         return buff;
     }
     
+    public String toString2(){
+        int index=0;
+        String buff="";
+        while(!(index == this.getSizeList())){
+        buff =buff + "La position de la balle " + index + " est (" + LInitial.get(index).getX() + ", " + LInitial.get(index).getY() + ") \n";
+        index ++;
+        }
+        return buff;
+    }
+    
     void reInit(){
         int index =0;
-        while(!(index == this.getSizeList()-1 )){
-            //this.ListPoint.get(index).
+        while(!(index == this.getSizeList())){
+            this.ListPoint.get(index).setLocation(this.LInitial.get(index));
+            //this.ListPoint.get(index).setLocation(this.ListPointInitial.get(index).getX(), this.ListPointInitial.get(index).getY());
+            index++;   
         }
     }
     
