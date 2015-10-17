@@ -1,3 +1,5 @@
+package src;
+/*
 
 import gui.*;
 
@@ -77,3 +79,4 @@ public class TestGUI {
 		ig.addGraphicalElement(new Text(100, 160, Color.WHITE, "INVADER"));	
 	}
 }
+*/

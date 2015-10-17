@@ -10,22 +10,29 @@ package src;
 import java.awt.Point;
 //import java.util.ArrayList;
 import java.util.LinkedList;
-
+import java.util.Iterator;
 /**
  *
  * @author hyun
  */
 public class Balls extends Point{
     private LinkedList<Point> ListPoint ;
+    //protected Iterator ListIterator = ListPoint.iterator();
     
     public Balls(){
+        this.ListPoint= new LinkedList<>();
     }
-  
     
-    public Balls(Point point){
-        this.addBall(point);
+    /*public Balls(Balls balls){
+        while (ListIterator.hasNext()){
+            this.ListPoint.addLast(balls.getListPoint().getFirst());
+        }
+    } */
+    
+    public LinkedList<Point> getListPoint(){
+        return this.ListPoint;
     }
-
+    
     public void addBall(Point point){
         this.ListPoint.add(point);
     }
@@ -35,7 +42,7 @@ public class Balls extends Point{
     }
     void translateBalls (int dx, int dy){
         int index=0;
-         while(!(index == this.getSizeList())){
+         while(!(index == this.getSizeList()-1)){
              this.ListPoint.get(index).translate(dx,dy);
              index ++;
          }
@@ -50,7 +57,7 @@ public class Balls extends Point{
         int index=0;
         String buff="";
         while(!(index == this.getSizeList())){
-        buff =buff + "La position de la balle" + index+ " est (" + ListPoint.get(index).getX() + ", " + ListPoint.get(index).getX() + ") \n";
+        buff =buff + "La position de la balle " + index + " est (" + ListPoint.get(index).getX() + ", " + ListPoint.get(index).getY() + ") \n";
         index ++;
         }
         return buff;
@@ -58,7 +65,7 @@ public class Balls extends Point{
     
     void reInit(){
         int index =0;
-        while(!(index == this.getSizeList())){
+        while(!(index == this.getSizeList()-1 )){
             //this.ListPoint.get(index).
         }
     }
