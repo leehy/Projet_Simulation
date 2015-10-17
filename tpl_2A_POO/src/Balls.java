@@ -15,8 +15,8 @@ import java.util.LinkedList;
  * @author hyun
  */
 public class Balls extends Point{
-    private final LinkedList<Point> ListPoint ;
-    private final LinkedList<Point> LInitial ;
+    private LinkedList<Point> ListPoint ;
+    private LinkedList<Point> LInitial ;
     //Iterator ListIterator = ListPoint.iterator();
     
     public Balls(){
