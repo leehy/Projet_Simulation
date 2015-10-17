@@ -34,6 +34,8 @@ public class TestBalls {
         balls.reInit();
         System.out.println(balls.toString());
         System.out.println(balls.toString2());
-       
+        
+        Balls balls2 = new Balls(balls);
+        System.out.println(balls2.toString());
     }
 }

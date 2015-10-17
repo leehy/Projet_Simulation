@@ -11,20 +11,26 @@ import gui.Simulable;
  *
  * @author hyun
  */
-public class BallsSimulator implements Simulable {
+public class BallsSimulator extends Balls implements Simulable {
     private Balls balls;
     
     public BallsSimulator(){
-        this.balls= new Balls();
+        super();
+    }
+    
+    public BallsSimulator(Balls balls){
+        super(balls);
     }
     
     @Override
     public void restart(){
-        
+        super.reInit();
+        System.out.println(this.toString());
     }
     
     @Override
     public void next(){
-        
-    }
+        System.out.println(this.toString());
+	}
+    
 }

@@ -20,8 +20,17 @@ public class Balls extends Point{
     //Iterator ListIterator = ListPoint.iterator();
     
     public Balls(){
+        super();
         this.ListPoint= new LinkedList<>();
         this.LInitial= new LinkedList<>();
+    }
+    
+    /*public Balls(Point point){
+        this.ListPoint.add(point);
+    }*/
+    
+    public Balls(Balls balls){
+        this.ListPoint= balls.getListPoint();
     }
     
     public LinkedList<Point> getListPoint(){
@@ -42,7 +51,6 @@ public class Balls extends Point{
         int index=0;
          while(!(index == this.getSizeList())){
              this.ListPoint.get(index).translate(dx,dy);
-             //this.LInitial.get(index).translate(-dx, -dy);
              index ++;
          }
     }
