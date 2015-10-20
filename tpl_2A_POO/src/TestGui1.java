@@ -24,7 +24,6 @@ public class TestGui1 {
                     new Rectangle(i, 250,
                             Color.decode("#1f77B4"), Color.decode("#1f77B4"), 10));
         }
-
     }
 
 }

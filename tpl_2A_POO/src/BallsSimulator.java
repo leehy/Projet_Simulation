@@ -7,7 +7,7 @@ package src;
 
 import gui.GUISimulator;
 import gui.Simulable;
-import static java.awt.Color.red;
+import java.awt.Color;
 
 /**
  *
@@ -20,7 +20,7 @@ public class BallsSimulator implements Simulable {
     
     public BallsSimulator() {
         this.balls = new Balls();
-        this.gui = new GUISimulator(20,20,red);
+        this.gui = new GUISimulator(20,20,Color.RED);
     }
     /*
     public BallsSimulator(Balls balls) {
@@ -35,15 +35,19 @@ public class BallsSimulator implements Simulable {
     @Override
     public void restart() {
         this.balls.reInit();
+        this.gui.setSimulable(this);
         this.gui.reset();
         System.out.println(this.balls.toString());
+        
     }
 
     @Override
     public void next() {
         this.balls.translateBalls(2,2);
-        this.gui.next();;
+        this.gui.setSimulable(this);
+        this.gui.next();
         System.out.println(this.balls.toString());
+        this.gui.setSimulable(this);
     }
 
 }
