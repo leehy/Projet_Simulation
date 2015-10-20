@@ -17,7 +17,7 @@ public class BallsSimulator extends Balls implements Simulable {
     private Balls balls;
     
     public BallsSimulator() {
-        super();
+        this.balls = new Balls();
     }
     /*
     public BallsSimulator(Balls balls) {
@@ -31,12 +31,14 @@ public class BallsSimulator extends Balls implements Simulable {
     
     @Override
     public void restart() {
-        this.guiSimulator.reset();
+        this.balls.reInit();
+        System.out.println(this.balls.toString());
     }
 
     @Override
     public void next() {
-        this.guiSimulator.next();
+        this.balls.translateBalls(2,2);
+        System.out.println(this.balls.toString());
     }
 
 }

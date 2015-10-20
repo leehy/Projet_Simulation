@@ -20,9 +20,14 @@ public class Balls extends Point{
     //Iterator ListIterator = ListPoint.iterator();
     
     public Balls(){
-        super()
+        super();
         this.ListPoint= new LinkedList<>();
         this.LInitial= new LinkedList<>();
+        this.addBall(new Point(2,2));
+        this.addBall(new Point(3,3));
+        this.addBall(new Point(4,4));
+        this.addBall(new Point(5,5));
+        
     }
     
     public Balls(Balls balls){
