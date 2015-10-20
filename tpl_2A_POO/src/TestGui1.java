@@ -22,8 +22,7 @@ public class TestGui1 {
 
             window.addGraphicalElement(
                     new Rectangle(i, 250,
-                            Color.decode(" #1 f77b4 "), Color.decode(" #1 f77b4 "), 10));
-
+                            Color.decode("#1f77B4"), Color.decode("#1f77B4"), 10));
         }
 
     }
