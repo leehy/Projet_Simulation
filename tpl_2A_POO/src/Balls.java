@@ -8,25 +8,24 @@ package src;
 
 
 import java.awt.Point;
-import java.util.LinkedList;
-//import java.util.Iterator;
+import java.util.ArrayList;
 /**
  *
  * @author hyun
  */
 public class Balls extends Point{
-    private LinkedList<Point> ListPoint ;
-    private LinkedList<Point> LInitial ;
+    private ArrayList<Point> ListPoint ;
+    private ArrayList<Point> LInitial ;
     //Iterator ListIterator = ListPoint.iterator();
     
     public Balls(){
         super();
-        this.ListPoint= new LinkedList<>();
-        this.LInitial= new LinkedList<>();
-        this.addBall(new Point(2,2));
-        this.addBall(new Point(3,3));
-        this.addBall(new Point(4,4));
-        this.addBall(new Point(5,5));
+        this.ListPoint= new ArrayList<>();
+        this.LInitial= new ArrayList<>();
+        this.addBall(new Point(300,300));
+        this.addBall(new Point(20,50));
+        this.addBall(new Point(80,120));
+        this.addBall(new Point(140,70));
         
     }
     
@@ -34,8 +33,12 @@ public class Balls extends Point{
         this.ListPoint= balls.getListPoint();
     }
     
-    public LinkedList<Point> getListPoint(){
+    public ArrayList<Point> getListPoint(){
         return this.ListPoint;
+    }
+    
+    public ArrayList<Point> getListPointInitial(){
+        return this.LInitial;
     }
     
     public void addBall(Point point){
@@ -58,6 +61,10 @@ public class Balls extends Point{
      
     public int getSizeList(){
         return ListPoint.size();
+    }
+    
+    public int getSizeListInitial(){
+        return LInitial.size();
     }
     
     @Override
