@@ -15,6 +15,10 @@ public class Cellule {
     private Point Localisation;
     private int etat;
 
+    public Cellule() {
+        this.Localisation = new Point(0,0);
+        this.etat = 0;
+    }
     public Cellule(Point Localisation) {
         this.Localisation = Localisation;
         this.etat = 0 ; 
@@ -33,7 +37,7 @@ public class Cellule {
     
     
     public void setEtat(int e) {
-        if(e<=0) {
+        if(e<=1) {
             this.etat = e;
         }
         else {
