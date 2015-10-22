@@ -14,7 +14,8 @@ import gui.GUISimulator;
 public class TestJeuDeLaVie {
     public static void main ( String [] args ) {
     JeuDeLaVie jeu = new JeuDeLaVie();
-    GUISimulator gui = jeu.getGuiSimulator();
+    jeu.setProbabilité((float)0.15);
+    GUISimulator gui = jeu.getguiSimulator();
     gui.setSimulable(jeu) ;
 }
 }

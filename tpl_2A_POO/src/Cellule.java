@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package src;
+
 import java.awt.Point;
 import java.util.Random;
 
@@ -12,47 +13,55 @@ import java.util.Random;
  * @author sacha
  */
 public class Cellule {
-    private Point Localisation;
+
+    private Point localisation;
     private int etat;
 
     public Cellule() {
-        this.Localisation = new Point(0,0);
+        this.localisation = new Point(0, 0);
         this.etat = 0;
     }
-    public Cellule(Point Localisation) {
-        this.Localisation = Localisation;
-        this.etat = 0 ; 
+
+    public Cellule(Point localisation) {
+        this.localisation = localisation;
+        this.etat = 0;
     }
 
-    public Cellule(Point Localisation, int etat) {
-        this.Localisation = Localisation;
+    public Cellule(Point localisation, int etat) {
+        this.localisation = localisation;
         this.etat = etat;
     }
-    
-   /*méthode permettant de mettre l'état de la cellule de manière aléatoire entre 0 et e (ce ne sera que entre 0 et 1 vu la méthode setEtat mais peut etre que ca peut servir pour la question suivante)*/
-    public void setEtatAléatoire(int e){
+
+    /*méthode permettant de mettre l'état de la cellule de manière aléatoire entre 0 et e (ce ne sera que entre 0 et 1 vu la méthode setEtat mais peut etre que ca peut servir pour la question suivante)*/
+    public void setEtatAléatoire(int e) {
         Random r = new Random();
         this.setEtat(r.nextInt(e));
     }
-    
-    
-    public void setEtat(int e) {
-        if(e<=1) {
-            this.etat = e;
+    /*setEtatAléatoireProbabilité(float p) permet de choisir par le biais de p la probabilité que la cellule soit dans l'état vivant*/
+
+    public void setEtatAléatoireProbabilité(float p) {
+        Random r = new Random();
+        if (r.nextFloat() <= p) {
+            this.etat = 1;
+        } else {
+            this.etat = 0;
         }
-        else {
+    }
+
+    public void setEtat(int e) {
+        if (e <= 1) {
+            this.etat = e;
+        } else {
             System.out.println("erreur : l'état ne peut être que 1 (vivante) ou 0 (morte)");
         }
     }
-    
-    
+
     public int getEtat() {
         return this.etat;
     }
-   
-    
-    public Point getLocalisation() {
-        return this.Localisation;
+
+    public Point getlocalisation() {
+        return this.localisation;
     }
-    
+
 }
