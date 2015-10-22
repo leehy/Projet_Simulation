@@ -14,7 +14,10 @@ import gui.GUISimulator;
 public class TestJeuDeLaVie {
     public static void main ( String [] args ) {
     JeuDeLaVie jeu = new JeuDeLaVie();
-    jeu.setProbabilité((float)0.15);
+    jeu.setProbabilité((float)0.1);
+    //il y a un problème lorsqu'on setSizeSim avec 2 tailles différentes je verrai ca plus tard peut etre
+    jeu.setSizeSim(500,500);
+    jeu.setNombreCellule(100, 100);
     GUISimulator gui = jeu.getguiSimulator();
     gui.setSimulable(jeu) ;
 }
