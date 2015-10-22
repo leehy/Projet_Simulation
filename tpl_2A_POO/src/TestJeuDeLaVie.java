@@ -6,19 +6,22 @@
 package src;
 
 import gui.GUISimulator;
+/*hop hop les gars je vous laisse un petit message ici comme ca c'est sur que vous le verrez.
+ */
 
 /**
  *
  * @author sacha
  */
 public class TestJeuDeLaVie {
-    public static void main ( String [] args ) {
-    JeuDeLaVie jeu = new JeuDeLaVie();
-    jeu.setProbabilité((float)0.1);
-    //il y a un problème lorsqu'on setSizeSim avec 2 tailles différentes je verrai ca plus tard peut etre
-    jeu.setSizeSim(500,500);
-    jeu.setNombreCellule(100, 100);
-    GUISimulator gui = jeu.getguiSimulator();
-    gui.setSimulable(jeu) ;
-}
+
+    public static void main(String[] args) {
+        JeuDeLaVie jeu = new JeuDeLaVie();
+        jeu.setProbabilité((float) 0.1);
+        //si on voit tout noir c'est qu'il y a trop de cellules pour la taille
+        jeu.setSizeSim(1500, 1000);
+        jeu.setNombreCellule(200, 300);
+        GUISimulator gui = jeu.getguiSimulator();
+        gui.setSimulable(jeu);
+    }
 }
