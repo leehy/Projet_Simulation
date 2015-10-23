@@ -16,21 +16,47 @@ import java.util.ArrayList;
 public class Balls extends Point{
     private ArrayList<Point> ListPoint ;
     private ArrayList<Point> LInitial ;
-    //Iterator ListIterator = ListPoint.iterator();
+    
+    //Attribut pour controler les directions de chaque balle
+    private ArrayList<Integer> speedCoeffX;
+    private ArrayList<Integer> speedCoeffY;
     
     public Balls(){
         super();
+        int index = 0;
         this.ListPoint= new ArrayList<>();
         this.LInitial= new ArrayList<>();
         this.addBall(new Point(300,300));
         this.addBall(new Point(20,50));
         this.addBall(new Point(80,120));
         this.addBall(new Point(140,70));
+        this.speedCoeffX = new ArrayList<>();
+        this.speedCoeffY = new ArrayList<>();
+        while (this.getSizeList() != index) {
+            this.speedCoeffX.add(index, 1);
+            this.speedCoeffY.add(index, 1);
+            index++;
+        } 
         
     }
     
     public Balls(Balls balls){
         this.ListPoint= balls.getListPoint();
+    }
+    
+    public void setSpeedCoeff(int index, int x, int y){
+        this.speedCoeffX.remove(index);
+        this.speedCoeffX.add(index, x);
+        this.speedCoeffY.remove(index);
+        this.speedCoeffY.add(index, y);
+    }
+    
+    public int getSpeedCoeffX(int index){
+        return this.speedCoeffX.get(index);
+    }
+     
+    public int getSpeedCoeffY(int index){
+        return this.speedCoeffY.get(index);
     }
     
     public ArrayList<Point> getListPoint(){
@@ -54,7 +80,7 @@ public class Balls extends Point{
     void translateBalls (int dx, int dy){
         int index=0;
          while(!(index == this.getSizeList())){
-             this.ListPoint.get(index).translate(dx,dy);
+             this.ListPoint.get(index).translate(this.getSpeedCoeffX(index)*dx,this.getSpeedCoeffY(index)*dy);
              index ++;
          }
     }
