@@ -23,5 +23,11 @@ public class TestJeuDeLaVie {
         jeu.setNombreCellule(200, 300);
         GUISimulator gui = jeu.getguiSimulator();
         gui.setSimulable(jeu);
+        
+        /* Cas à traiter : 
+        Cas où le jeu ne peut plus avancer car la disposition des cellules ne permet pas d'avoir de nouvelles naissances
+        Cas où toutes les cellules sont mortes
+        Cas où toutes les cellules sont vivantes
+        */
     }
 }
