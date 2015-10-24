@@ -29,7 +29,8 @@ public class Balls extends Point{
         this.addBall(new Point(300,300));
         this.addBall(new Point(20,50));
         this.addBall(new Point(80,120));
-        this.addBall(new Point(140,70));
+        this.addBall(new Point(10,80));
+        this.addBall(new Point(30,50));
         this.speedCoeffX = new ArrayList<>();
         this.speedCoeffY = new ArrayList<>();
         while (this.getSizeList() != index) {
