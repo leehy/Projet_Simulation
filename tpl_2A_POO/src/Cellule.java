@@ -33,11 +33,11 @@ public class Cellule {
     }
 
     /*méthode permettant de mettre l'état de la cellule de manière aléatoire entre 0 et e (ce ne sera que entre 0 et 1 vu la méthode setEtat mais peut etre que ca peut servir pour la question suivante)*/
-   /* public void setEtatAléatoire(int e) {
+    public void setEtatAléatoire(int e) {
         Random r = new Random();
         this.setEtat(r.nextInt(e));
     }
-    */
+    
     
     
     /*setEtatAléatoireProbabilité(float p) permet de choisir par le biais de p la probabilité que la cellule soit dans l'état vivant*/
