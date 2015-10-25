@@ -88,10 +88,23 @@ public class JeuDeLaVie implements Simulable {
     return this.probabilité;
     }
     
-    public GUISimulator getguiSimulator() {
-        return this.gui;
+    
+    
+
+    public GUISimulator getguiSimulator() throws RapportCelluleTailleException {
+        //si le rapport entre l'aire de la fenêtre et le nombre total de cellule n'est pas supérieur à 9 on lance l'exception
+        if ((this.getSizeSimX() * this.getSizeSimY()) < 9 * (this.getNombreCelluleHauteur() * this.getNombreCelluleLongueur())) {
+            throw new RapportCelluleTailleException((float) (this.getSizeSimX() * this.getSizeSimY()) / (this.getNombreCelluleHauteur() * this.getNombreCelluleLongueur()));
+        }
+        else {
+            return this.gui;
+        }
     }
 
+    public GUISimulator getguiSimulatorSimple() {
+        return this.gui;
+    }
+ 
     /*renvoie le nombre de voisins vivants pour la cellule du tableau à la ligne i, colonne j du plateau
     public int getNombreVoisinsVivants(int i, int j) {
         int compteur = 0;
