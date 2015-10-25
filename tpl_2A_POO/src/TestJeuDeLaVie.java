@@ -15,13 +15,15 @@ import gui.GUISimulator;
  */
 public class TestJeuDeLaVie {
 
+    // si on met pas le try et le catch dans le test ca compile pas !
+    
     public static void main(String[] args) {
         JeuDeLaVie jeu = new JeuDeLaVie();
         jeu.setProbabilité((float) 0.1);
         //si on voit tout noir c'est qu'il y a trop de cellules pour la taille
-        try {
-            jeu.setSizeSim(300, 300);
-            jeu.setNombreCellule(150, 100);
+       try {
+            jeu.setSizeSim(500, 500);
+            jeu.setNombreCellule(100, 100);
             GUISimulator gui = jeu.getguiSimulator();
             gui.setSimulable(jeu);
         } catch (RapportCelluleTailleException e) {
