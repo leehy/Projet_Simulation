@@ -29,6 +29,7 @@ public class JeuDeLaVie implements Simulable {
     public JeuDeLaVie() {
         this.nombreCelluleHauteur = 25;
         this.nombreCelluleLongueur = 25;
+        /* il y a autant de cellules en hauteur que de ligne dans le plateau et autant de cellule en longueur que de nombre de case en largeur dans le plateau*/
         this.plateau = new Cellule[nombreCelluleHauteur][nombreCelluleLongueur];
         this.sauvegardeEtat = new int[nombreCelluleHauteur][nombreCelluleLongueur];
         for (int i = 0; i < this.getNombreCelluleHauteur(); i++) {
@@ -134,11 +135,16 @@ public class JeuDeLaVie implements Simulable {
     }
 	*/
 	
+    
+    /*renvoie le nombre de voisins vivants pour la cellule du tableau à la ligne i, colonne j du plateau
+*/
     public int getNombreVoisinsVivants(int i, int j) {
         int compteur = 0;
 		for (int a = -1; a<2; a++){
+                   
 			for (int b = -1; b<2; b++){
-			compteur = compteur + plateau[(i + a) % nombreCelluleHauteur][(j + b) % nombreCelluleLongueur].getEtat();
+                            /*modulo un peu sale car java renvoie juste le reste de la division euclidienne (donc -1 pour -1) et du coup on sort du tableau avec juste %*/
+			compteur = compteur + (plateau[((i + a) % getNombreCelluleHauteur() + getNombreCelluleHauteur())%getNombreCelluleHauteur()][((j + b) % getNombreCelluleLongueur() + getNombreCelluleLongueur())% getNombreCelluleLongueur() ]).getEtat();
 			}
 		}
 		return compteur - plateau[i][j].getEtat();

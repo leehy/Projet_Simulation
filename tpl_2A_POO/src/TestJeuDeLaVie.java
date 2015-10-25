@@ -17,7 +17,7 @@ public class TestJeuDeLaVie {
 
     public static void main(String[] args) {
         JeuDeLaVie jeu = new JeuDeLaVie();
-        jeu.setProbabilité((float) 0.1);
+        jeu.setProbabilité((float) 0.05);
         //si on voit tout noir c'est qu'il y a trop de cellules pour la taille
         jeu.setSizeSim(1500, 1000);
         jeu.setNombreCellule(200, 300);
