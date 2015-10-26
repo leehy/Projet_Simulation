@@ -26,7 +26,7 @@ public class Balls extends Point{
         int index = 0;
         this.ListPoint= new ArrayList<>();
         this.LInitial= new ArrayList<>();
-        this.addBall(new Point(300,300));
+        this.addBall(new Point(470,480));
         this.addBall(new Point(20,50));
         this.addBall(new Point(80,120));
         this.addBall(new Point(10,80));
