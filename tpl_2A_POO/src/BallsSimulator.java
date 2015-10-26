@@ -36,8 +36,8 @@ public class BallsSimulator implements Simulable {
         this.sizeSimX = 500;
         this.sizeSimY = 500;
         this.gui = new GUISimulator(sizeSimX, sizeSimY, Color.BLACK);
-        this.speedSimX = 30;
-        this.speedSimY = 20;
+        this.speedSimX = 15;
+        this.speedSimY = 45;
     }
 
     public void setSizeSim(int sizeSimX, int sizeSimY) {
@@ -172,11 +172,19 @@ public class BallsSimulator implements Simulable {
                 else if(this.balls.getListPoint().get(index).getX() > this.getSizeSimX() && (this.balls.getListPoint().get(index).getY() > this.getSizeSimY()))
                 this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
                 System.out.println("Test2.13");
+                
+                if( this.balls.getSpeedCoeffX(index) >0 ){
+                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
+                }
+                else if( this.balls.getSpeedCoeffY(index) > 0 ){
+                    this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+                }
             }
 
             // Traitement du rebond lorsqu'on est sur le cote bas du simulateur
             else if (this.balls.getListPoint().get(index).getY() > this.getSizeSimY() && this.balls.getListPoint().get(index).getX() < this.getSizeSimX()  && this.balls.getListPoint().get(index).getX() >0) {
                 this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+                
                 System.out.println("Test3");
             }
             
