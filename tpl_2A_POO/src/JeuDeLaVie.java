@@ -196,8 +196,7 @@ public class JeuDeLaVie implements Simulable {
 
     @Override
     public void next() {
-        //la methode next ne marchera plu au bout d'un moment : a partir du moment ou on est sûr que le jeu jeu ne peut plus évoluer
-        if (NombreDeTourJoue < this.nombreCelluleHauteur/2 && NombreDeTourJoue < this.nombreCelluleLongueur/2) {
+       
             // On efface l'écran
 
             gui.reset();
@@ -219,7 +218,7 @@ public class JeuDeLaVie implements Simulable {
                     //si la cellule i,j du plateau est vivante
                     if (this.plateau[i][j].getEtat() == 1) {
                         /*si le nombre de voisins de la case vivante est supérieur ou égal à 2 alors la cellule reste vivante( */
-                        if (this.getNombreVoisinsVivants(i, j) > 1) {
+                        if (this.getNombreVoisinsVivants(i, j) > 1  && this.getNombreVoisinsVivants(i, j) < 4) {
                             this.sauvegardeEtat[i][j] = 1;
                             gui.addGraphicalElement(new Rectangle(j * this.getSizeSimX() / this.getNombreCelluleLongueur() + 10, i * this.getSizeSimY() / this.getNombreCelluleHauteur() + 10, Color.BLACK, Color.BLUE, this.getSizeSimX() / this.getNombreCelluleLongueur(), this.getSizeSimY() / this.getNombreCelluleHauteur()));
                         } //sinon elle meurt
@@ -236,9 +235,7 @@ public class JeuDeLaVie implements Simulable {
                     plateau[i][j].setEtat(this.sauvegardeEtat[i][j]);
                 }
             }
-        } else {
-            System.out.println("Le jeu de la vie est fini. Recommencez");
-        }
+       
     }
 
 }
