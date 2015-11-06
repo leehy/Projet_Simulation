@@ -60,7 +60,19 @@ public class JeuDeLaVie implements Simulable {
     public int getSizeSimY() {
         return this.sizeSimY;
     }
-
+    
+    public Cellule [][] getPlateau() {
+        return plateau;
+    }
+    
+    public int [][] getSauvegardeEtat () {
+        return sauvegardeEtat;
+    }
+    
+    public GUISimulator getGui() {
+        return gui;
+    }
+    
     public void setNombreCellule(int NombreHauteur, int NombreLongueur) throws RapportCelluleTailleException {
         this.nombreCelluleHauteur = NombreHauteur;
         this.nombreCelluleLongueur = NombreLongueur;
@@ -154,6 +166,7 @@ public class JeuDeLaVie implements Simulable {
      */
     /*renvoie le nombre de voisins vivants pour la cellule du tableau à la ligne i, colonne j du plateau
      */
+    
     public int getNombreVoisinsVivants(int i, int j) {
         int compteur = 0;
         for (int a = -1; a < 2; a++) {
@@ -166,6 +179,18 @@ public class JeuDeLaVie implements Simulable {
         return compteur - plateau[i][j].getEtat();
     }
 
+    
+    public Color getCouleur (int n){
+            switch (n) {
+		case 0 : return Color.WHITE; //cas d'une habitation libre
+            	default: return Color.BLUE;
+            }
+	}
+    
+    public void afficheCellule (int i, int j) {
+        (getGui()).addGraphicalElement(new Rectangle(j * this.getSizeSimX() / this.getNombreCelluleLongueur() + 10, i * this.getSizeSimY() / this.getNombreCelluleHauteur() + 10, Color.BLACK, getCouleur ((getPlateau()) [i][j].getEtat ()), this.getSizeSimX() / this.getNombreCelluleLongueur(), this.getSizeSimY() / this.getNombreCelluleHauteur()));
+    }
+    
     @Override
     public void restart() {
         // On efface l'ecran
@@ -182,13 +207,7 @@ public class JeuDeLaVie implements Simulable {
         //on affiche toute les cases
         for (int i = 0; i < this.getNombreCelluleHauteur(); i++) {
             for (int j = 0; j < this.getNombreCelluleLongueur(); j++) {
-                if (plateau[i][j].getEtat() == 1) {
-                    /*pour l'instant c'est juste sur le cas particulier d'une fenêtre gui de taille SizeSimX*SizeSimY et de cellule de taille NombreCelluleHauteur()*NombreCelluleLongueur() (provisoire) */
-                    gui.addGraphicalElement(new Rectangle(j * getSizeSimX() / this.getNombreCelluleLongueur() + 10, i * this.getSizeSimY() / this.getNombreCelluleHauteur() + 10, Color.BLACK, Color.BLUE, this.getSizeSimX() / this.getNombreCelluleLongueur(), this.getSizeSimY() / this.getNombreCelluleHauteur()));
-                }
-                if (plateau[i][j].getEtat() == 0) {
-                    gui.addGraphicalElement(new Rectangle(j * this.getSizeSimX() / this.getNombreCelluleLongueur() + 10, i * this.getSizeSimY() / this.getNombreCelluleHauteur() + 10, Color.BLACK, Color.WHITE, this.getSizeSimX() / this.getNombreCelluleLongueur(), this.getSizeSimY() / this.getNombreCelluleHauteur()));
-                }
+                afficheCellule (i,j);
             }
         }
 
@@ -208,11 +227,9 @@ public class JeuDeLaVie implements Simulable {
                         if (this.getNombreVoisinsVivants(i, j) > 2) {
                             /*si le nombre de voisins de la case morte est supérieur ou égal à 3 alors on crée une cellule vivante( */
                             this.sauvegardeEtat[i][j] = 1;
-                            gui.addGraphicalElement(new Rectangle(j * this.getSizeSimX() / this.getNombreCelluleLongueur() + 10, i * this.getSizeSimY() / this.getNombreCelluleHauteur() + 10, Color.BLACK, Color.BLUE, this.getSizeSimX() / this.getNombreCelluleLongueur(), this.getSizeSimY() / this.getNombreCelluleHauteur()));
                         } //sinon on redessine une cellule morte
                         else {
                             this.sauvegardeEtat[i][j] = 0;
-                            gui.addGraphicalElement(new Rectangle(j * this.getSizeSimX() / this.getNombreCelluleLongueur() + 10, i * this.getSizeSimY() / this.getNombreCelluleHauteur() + 10, Color.BLACK, Color.WHITE, this.getSizeSimX() / this.getNombreCelluleLongueur(), this.getSizeSimY() / this.getNombreCelluleHauteur()));
                         }
                     }
                     //si la cellule i,j du plateau est vivante
@@ -220,11 +237,9 @@ public class JeuDeLaVie implements Simulable {
                         /*si le nombre de voisins de la case vivante est supérieur ou égal à 2 alors la cellule reste vivante( */
                         if (this.getNombreVoisinsVivants(i, j) > 1  && this.getNombreVoisinsVivants(i, j) < 4) {
                             this.sauvegardeEtat[i][j] = 1;
-                            gui.addGraphicalElement(new Rectangle(j * this.getSizeSimX() / this.getNombreCelluleLongueur() + 10, i * this.getSizeSimY() / this.getNombreCelluleHauteur() + 10, Color.BLACK, Color.BLUE, this.getSizeSimX() / this.getNombreCelluleLongueur(), this.getSizeSimY() / this.getNombreCelluleHauteur()));
                         } //sinon elle meurt
                         else {
                             this.sauvegardeEtat[i][j] = 0;;
-                            gui.addGraphicalElement(new Rectangle(j * this.getSizeSimX() / this.getNombreCelluleLongueur() + 10, i * this.getSizeSimY() / this.getNombreCelluleHauteur() + 10, Color.BLACK, Color.WHITE, this.getSizeSimX() / this.getNombreCelluleLongueur(), this.getSizeSimY() / this.getNombreCelluleHauteur()));
                         }
                     }
                 }
@@ -233,9 +248,8 @@ public class JeuDeLaVie implements Simulable {
             for (int i = 0; i < this.getNombreCelluleHauteur(); i++) {
                 for (int j = 0; j < this.getNombreCelluleLongueur(); j++) {
                     plateau[i][j].setEtat(this.sauvegardeEtat[i][j]);
+                    afficheCellule (i,j);
                 }
             }
-       
     }
-
 }

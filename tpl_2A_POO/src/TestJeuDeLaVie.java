@@ -23,12 +23,13 @@ public class TestJeuDeLaVie {
         //si on voit tout noir c'est qu'il y a trop de cellules pour la taille
        try {
             jeu.setSizeSim(500, 500);
-            jeu.setNombreCellule(100, 100);
+            jeu.setNombreCellule(15, 15);
             GUISimulator gui = jeu.getguiSimulator();
             gui.setSimulable(jeu);
-        } catch (RapportCelluleTailleException e) {
+        } 
+       catch (RapportCelluleTailleException e) {
         }
-        }
+    }
     
 }
 /* Cas à traiter : 
