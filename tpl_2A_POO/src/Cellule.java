@@ -64,4 +64,7 @@ public class Cellule {
         return this.localisation;
     }
 
+    public void setLocalisation(Point p) {
+        this.localisation.setLocation(p);
+    }
 }

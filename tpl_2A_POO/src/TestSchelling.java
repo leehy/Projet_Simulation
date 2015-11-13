@@ -16,7 +16,7 @@ public class TestSchelling {
     // si on met pas le try et le catch dans le test ca compile pas !
     
     public static void main(String[] args) {
-        Schelling jeu = new Schelling(6,50,3);
+        Schelling jeu = new Schelling(4,50,2);
         //si on voit tout noir c'est qu'il y a trop de cellules pour la taille
        try {
             jeu.setSizeSim(750, 750);
