@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package src;
-import java.util.Stack; 
+import java.util.*; 
 import java.awt.Point;
 import gui.*;
 import java.awt.Color;
@@ -15,7 +15,7 @@ import java.awt.Color;
  */
 public class BoidSimulator implements Simulable {
     
-    private Stack hachage [][];
+    private Stack<Boids> hachage [][];
     private int hauteur;
     private int longueur;
     private int NbBoids;
@@ -32,11 +32,11 @@ public class BoidSimulator implements Simulable {
         
         for (int i = 0; i < h/r; i++) {
             for (int j = 0; j < l/r; j++) {
-                hachage[i][j] = new Stack (); //Initialise le tableau de jeu avec des piles de Boids
+                hachage[i][j] = new Stack<Boids> (); //Initialise le tableau de jeu avec des piles de Boids
             }
         }
         
-        this.gui = new GUISimulator(10 * l/r, 10 * l/r, Color.BLACK);
+        this.gui = new GUISimulator(l/r*r+10, h/r*r+10, Color.BLACK);
         
     }
     
@@ -51,7 +51,7 @@ public class BoidSimulator implements Simulable {
     
     private Point caseCorrespondante (Boids b){ //Calcule la position d'un boids dans le plateau
         Point p = new Point ();
-        p.setLocation( b.getlocalisation().getX() / b.getRayon (), b.getlocalisation().getY() / b.getRayon ());
+        p.setLocation( b.getlocalisation().getX() / b.getRayonAction (), b.getlocalisation().getY() / b.getRayonAction ());
         return p;
     }
     
@@ -60,8 +60,27 @@ public class BoidSimulator implements Simulable {
         hachage [p.x][p.y].push (b);
     }
     
-    private Stack voisinsPotentiels (Boids b){ //retourne la pile des boids dans les 9 cases entourant un boid
-        Stack pile = new Stack ();
+    private Stack<Boids> auxDelete (Boids b, Stack<Boids> s1, Stack<Boids> s2){
+        try {
+            Boids acc = s2.pop ();
+            if (!(b.estEgal (acc))) {
+                s1.push(acc);
+            }
+            return auxDelete (b,s1,s2);
+        }
+        catch (EmptyStackException e) {
+            return s1;
+        }
+    }
+    
+    private void delBoid (Boids b) { //supprime un boid à la table de hachage
+        Point p = caseCorrespondante (b);
+        Stack<Boids> s = new Stack<Boids> ();
+        hachage [p.x][p.y] = auxDelete(b,s,hachage [p.x][p.y]);
+    }
+    
+    private Stack<Boids> voisinsPotentiels (Boids b){ //retourne la pile des boids dans les 9 cases entourant un boid
+        Stack<Boids> pile = new Stack<Boids> ();
         Point caseDuBoid = caseCorrespondante (b);
         Point acc = new Point ();
         
@@ -80,26 +99,84 @@ public class BoidSimulator implements Simulable {
         return gui;
     }
     
+    private void auxAffiche (Stack<Boids> hach){
+        try {
+        Boids b = hach.pop ();
+        b.afficheBoid (gui);
+        auxAffiche (hach);
+        hach.push(b);
+        }
+        catch (EmptyStackException e){
+        }
+    }
+    
+    private void affiche (){
+        for (int i = 0; i < hauteur/rayon; i++) {
+            for (int j = 0; j < longueur/rayon; j++) {
+                auxAffiche (hachage[i][j]); //Initialise le tableau de jeu avec des piles de Boids
+            }
+        }
+    }
+    
+    private void auxAfficheNext (Stack<Boids> hach){
+        try {
+        Boids b = hach.pop ();
+        b.moveBoid(voisinsPotentiels(b));
+        b.afficheBoid (gui);
+        auxAffiche (hach);
+        hach.push(b);
+        }
+        catch (EmptyStackException e){
+            System.out.println(e);
+        }
+    }
+    
+    private void afficheNext (){
+        for (int i = 0; i < hauteur/rayon; i++) {
+            for (int j = 0; j < longueur/rayon; j++) {
+            System.out.print(i);
+            System.out.print(" ");
+            System.out.print(j);
+                auxAfficheNext (hachage[i][j]); //Initialise le tableau de jeu avec des piles de Boids
+            }
+        }
+    }
+    
+    private void ajoute (int x, int y){
+        Boids b = new Boids (x,y,10,10,hauteur,longueur);
+        addBoid (b);
+    }
     
     @Override
     public void restart (){
-        this.gui.reset();
-        Boids b1 = new Boids (25,25);
-        Boids b2 = new Boids (100,25);
-        Boids b3 = new Boids (25,100);
-        Boids b4 = new Boids (250,25);
-        Boids b5 = new Boids (250,250);
-        //addBoid (b);
-        b1.afficheBoid (gui);
-        b2.afficheBoid (gui);
-        b3.afficheBoid (gui);
-        b4.afficheBoid (gui);
-        b5.afficheBoid (gui);
+        gui.reset();
+        int l = longueur/rayon*rayon;
+        int h = hauteur/rayon*rayon;
+        GraphicalElement e = new Rectangle(l/2,h/2, Color.RED, Color.BLACK, l,h);
+        gui.addGraphicalElement(e);
+    
+        for (int ici = 0; ici <= 100; ici++){
+            System.out.println (ici);
+            ajoute (l*ici/100,h*ici/100);
+        }
+            
+        //ajoute (l,h);
+        //ajoute (100,25);
+        //ajoute (25,100);
+        //ajoute (250,25);
+        //ajoute (250,250);
+        affiche ();
     }
     
     @Override
     public void next (){
+        gui.reset();
+        int l = longueur/rayon*rayon;
+        int h = hauteur/rayon*rayon;
+        GraphicalElement e = new Rectangle(l/2,h/2, Color.RED, Color.BLACK, l,h);
+        gui.addGraphicalElement(e);
         
+        afficheNext ();
     }
     
 }
