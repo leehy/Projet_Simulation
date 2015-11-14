@@ -188,7 +188,13 @@ public class JeuDeLaVie implements Simulable {
 	}
     
     public void afficheCellule (int i, int j) {
-        (getGui()).addGraphicalElement(new Rectangle(j * this.getSizeSimX() / this.getNombreCelluleLongueur() + 10, i * this.getSizeSimY() / this.getNombreCelluleHauteur() + 10, Color.BLACK, getCouleur ((getPlateau()) [i][j].getEtat ()), this.getSizeSimX() / this.getNombreCelluleLongueur(), this.getSizeSimY() / this.getNombreCelluleHauteur()));
+        (getGui()).addGraphicalElement(new Rectangle(
+                j * this.getSizeSimX() / this.getNombreCelluleLongueur() + 10,
+                i * this.getSizeSimY() / this.getNombreCelluleHauteur() + 10, 
+                Color.BLACK, 
+                getCouleur ((getPlateau()) [i][j].getEtat ()),
+                this.getSizeSimX() / this.getNombreCelluleLongueur(), 
+                this.getSizeSimY() / this.getNombreCelluleHauteur()));
     }
     
     @Override

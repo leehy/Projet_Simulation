@@ -24,38 +24,25 @@ public class Boids extends Cellule {
     //rayonSécurité est le rayon en-decà duquel les autres boids sont concernés comme trop proche, il faut donc changer de direction
     private int rayonSecurite;
     private Stack<Boids> voisins;
-    
-    //ce constructeur crée un boid sans voisins, sans vitesse initiale, a la position (0,0) et avec un angle nul avec la verticale
-    public Boids() {
-        super();
+    private int tailleFenetreHauteur;
+    private int tailleFenetreLongueur;
+   
+      //ce constructeur crée un Boids sans angle, avec un rayonAction de 100, un rayonSecurite de 10 une vitesse (Vx,Vy)
+      //une position (x,y), sans voisins, avec une taille de fenetre gui de tailleHauteur et tailleLargeur
+      public Boids(int x, int y, int Vx, int Vy, int tailleHauteur, int tailleLongueur) {
         this.angle = 0;
-        this.vitesse = new Point();
-        this.rayonAction = 100;
-        this.rayonSecurite = 10;
-        this.voisins = new Stack();
-    }
-    
-    //ce constructeur permet de définir un boid à la position (x,y)
-    public Boids(int x, int y) {
-        this.angle = 0;
-        this.rayonAction = 100;
-         this.rayonSecurite = 10;
-        this.vitesse = new Point();
-        this.setLocalisation(x, y);
-        this.voisins = new Stack(); 
-    }
-
-    //ce constructeur permet de definir un boid a la position( x,y) et a la vitesse initiale (Vx, Vy)
-    public Boids(int x, int y, int Vx, int Vy) {
-        this.angle = 0;
-        this.rayonAction = 100;
+        this.setEtat(0); //par défaut un boid est à l'état 0 
+        this.rayonAction = 1000;
          this.rayonSecurite = 10;
         this.vitesse = new Point();
         this.setLocalisation(x, y);
         this.vitesse.setLocation(Vx, Vy);
         this.voisins = new Stack();
+        this.tailleFenetreHauteur = tailleHauteur;
+        this.tailleFenetreLongueur = tailleLongueur;
     }
-
+      
+      
     public int getAngle() {
         return this.angle;
     }
@@ -68,7 +55,7 @@ public class Boids extends Cellule {
         return this.voisins;
     }
     
-    
+   //getRayonSecurite renvoie le rayonSecurite 
     public int getRayonSecurite() {
         return this.rayonSecurite;
     }
@@ -87,6 +74,20 @@ public class Boids extends Cellule {
             return true;
         else return false;
     }
+    
+    //setVoisins récupère une pile de voisins potentiels et rempli la pile des voisins
+    public void setVoisins(Stack<Boids> PileVoisinsPotentiels) {
+        try {
+            Boids b = PileVoisinsPotentiels.pop();
+            //on vérifie si l'élément de la pile est vraiment un voisin de notre boid
+           if( this.estVraimentVoisin(b))
+               //si oui on l'ajoute dans la liste des voisins
+               this.voisins.push(b);
+           setVoisins(PileVoisinsPotentiels);
+        }
+        catch(EmptyStackException e) {}
+            
+    } 
     
     
     //setAngle permet de regler l'angle avec la verticale du boid
@@ -144,8 +145,8 @@ public class Boids extends Cellule {
         double y = 0;
         int taille = this.voisins.size();
         while (index != taille) {
-            if (this.distanceCarre(this.voisins.get(index).getlocalisation()) < 10
-                    || this.distanceCarre(this.voisins.get(index).getlocalisation()) > -10) {
+            if (this.distanceCarre(this.voisins.get(index).getlocalisation()) < this.rayonSecurite
+                    || this.distanceCarre(this.voisins.get(index).getlocalisation()) > -this.rayonSecurite) {
                 x = this.getlocalisation().getX() - this.voisins.get(index).getlocalisation().getX();
                 y = this.getlocalisation().getY() - this.voisins.get(index).getlocalisation().getY();
                 deplacement.setLocation(deplacement.getX() - x, deplacement.getY() - y);
@@ -179,8 +180,10 @@ public class Boids extends Cellule {
         return deplacement;
     }
 
-//moveBoid permet de mettre le boid dans l'état suivant en terme de position et de vitesse suivant les différentes règles définies
-    public void moveBoid() {
+//moveBoid permet de mettre le boid dans l'état suivant en terme de position et de vitesse suivant les différentes règles définies.
+//il faut lui envoyer une liste de voisins potentiels afin qu'il calcule les véritables voisins et ainsi que les règles puissent être appliqués    
+    public void moveBoid(Stack<Boids> PileVoisinsPotentiels) {
+        this.setVoisins(PileVoisinsPotentiels);
         this.vitesse.setLocation(this.vitesse.getX() + this.regle1().getX() + this.regle2().getX() + this.regle3().getX(),
                 this.vitesse.getY() + this.regle1().getY() + this.regle2().getY() + this.regle3().getY());
         this.setLocalisation(this.getlocalisation().getX() + this.vitesse.getX(),
@@ -194,7 +197,13 @@ public class Boids extends Cellule {
     }
 
 public void afficheBoid(GUISimulator gui){
-    gui.addGraphicalElement(new Rectangle((int)this.getlocalisation().getX(), (int)this.getlocalisation().getY(), Color.GREEN, Color.WHITE, 5 , 5));
+    if(this.getlocalisation().getX()<this.tailleFenetreLongueur && this.getlocalisation().getX()>0 )
+    gui.addGraphicalElement(new Rectangle(
+            (int)this.getlocalisation().getX(),
+            (int)this.getlocalisation().getY(), 
+            Color.GREEN, 
+            Color.WHITE, 
+            5 , 5));
     
 }
 }
