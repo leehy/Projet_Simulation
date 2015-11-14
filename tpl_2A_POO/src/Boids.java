@@ -165,7 +165,7 @@ public class Boids extends Cellule {
         int index = 0;
         Point centreMasse = new Point();
         int taille = this.voisins.size();
-        while (index != voisins.size()) {
+        while (index != taille) {
             centreMasse.setLocation(centreMasse.getX() + (1 / taille) * this.voisins.get(index).getlocalisation().getX(), centreMasse.getY() + (1 / taille) * this.voisins.get(index).getlocalisation().getY());
             index++;
         }
