@@ -21,9 +21,11 @@ public class TestBoids {
     b.addVoisin(b3);
     
     
-   b.toString();
+   System.out.println(b.toString());
    b.moveBoid();
-   b.toString();
+   System.out.println(b.toString());
+   b.moveBoid();
+   System.out.println(b.toString());
 }
 
 }
