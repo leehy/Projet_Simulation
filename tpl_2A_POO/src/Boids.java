@@ -19,33 +19,76 @@ public class Boids extends Cellule {
 
     private int angle;
     private Point vitesse;
+    //rayonAction est le rayon au delà duquel les autres boids ne sont plus concernés comme des voisins
     private int rayonAction;
+    //rayonSécurité est le rayon en-decà duquel les autres boids sont concernés comme trop proche, il faut donc changer de direction
+    private int rayonSecurite;
     private Stack<Boids> voisins;
-
+    
+    //ce constructeur crée un boid sans voisins, sans vitesse initiale, a la position (0,0) et avec un angle nul avec la verticale
     public Boids() {
+        super();
         this.angle = 0;
         this.vitesse = new Point();
-        this.rayonAction = 50;
+        this.rayonAction = 100;
+        this.rayonSecurite = 10;
         this.voisins = new Stack();
     }
-
+    
+    //ce constructeur permet de définir un boid à la position (x,y)
     public Boids(int x, int y) {
         this.angle = 0;
-        this.rayonAction = 50;
+        this.rayonAction = 100;
+         this.rayonSecurite = 10;
         this.vitesse = new Point();
         this.setLocalisation(x, y);
         this.voisins = new Stack(); 
     }
 
+    //ce constructeur permet de definir un boid a la position( x,y) et a la vitesse initiale (Vx, Vy)
     public Boids(int x, int y, int Vx, int Vy) {
         this.angle = 0;
-        this.rayonAction = 50;
+        this.rayonAction = 100;
+         this.rayonSecurite = 10;
         this.vitesse = new Point();
         this.setLocalisation(x, y);
         this.vitesse.setLocation(Vx, Vy);
         this.voisins = new Stack();
     }
 
+    public int getAngle() {
+        return this.angle;
+    }
+    
+    public Point getVitesse() {
+        return this.vitesse;
+    }
+    
+    public Stack<Boids> getVoisins() {
+        return this.voisins;
+    }
+    
+    
+    public int getRayonSecurite() {
+        return this.rayonSecurite;
+    }
+    
+    //EstEgal permet de savoir si le boid concerné est égal à un autre Boid
+    public boolean estEgal(Boids b) {
+        if(this.rayonAction == b.getRayonAction() && this.rayonSecurite == b.getRayonSecurite() && this.angle == b.getAngle() && this.vitesse == b.getVitesse() && this.voisins == b.getVoisins() && this.getlocalisation() == b.getlocalisation())
+        return true;
+        else return false;
+    }
+    
+    
+//estVraimentVoisin permet de savoir si le boid donné en argument est vraiment un voisin du boid concerné
+    public boolean estVraimentVoisin(Boids b) {
+        if (this.rayonAction*this.rayonAction > distanceCarre(b.getlocalisation())) 
+            return true;
+        else return false;
+    }
+    
+    
     //setAngle permet de regler l'angle avec la verticale du boid
     public void setAngle(int valeur) {
         this.angle = valeur;
@@ -56,12 +99,8 @@ public class Boids extends Cellule {
         this.voisins.add(b);
     }
 
-    //setRayon permet de regler le rayon d'action des voisins
-    public void setRayon(int r) {
-        this.rayonAction = r;
-    }
 
-    public int getRayon() {
+    public int getRayonAction() {
         return this.rayonAction;
     }
 
