@@ -5,6 +5,8 @@
  */
 package src;
 
+import gui.*;
+import java.awt.Color;
 import java.util.*;
 import java.awt.Point;
 import java.util.Vector;
@@ -17,7 +19,7 @@ public class Boids extends Cellule {
 
     private int angle;
     private Point vitesse;
-    private float rayonAction;
+    private int rayonAction;
     private Stack<Boids> voisins;
 
     public Boids() {
@@ -27,7 +29,7 @@ public class Boids extends Cellule {
         this.voisins = new Stack();
     }
 
-    public Boids(double x, double y) {
+    public Boids(int x, int y) {
         this.angle = 0;
         this.rayonAction = 50;
         this.vitesse = new Point();
@@ -35,7 +37,7 @@ public class Boids extends Cellule {
         this.voisins = new Stack(); 
     }
 
-    public Boids(double x, double y, double Vx, double Vy) {
+    public Boids(int x, int y, int Vx, int Vy) {
         this.angle = 0;
         this.rayonAction = 50;
         this.vitesse = new Point();
@@ -55,11 +57,11 @@ public class Boids extends Cellule {
     }
 
     //setRayon permet de regler le rayon d'action des voisins
-    public void setRayon(float r) {
+    public void setRayon(int r) {
         this.rayonAction = r;
     }
 
-    public float getRayon() {
+    public int getRayon() {
         return this.rayonAction;
     }
 
@@ -152,4 +154,12 @@ public class Boids extends Cellule {
         return "le boid se trouve à la position : " + this.getlocalisation().toString() + " et sa vitesse est : " + this.vitesse.toString();
     }
 
+public void afficheBoid(GUISimulator gui){
+    gui.addGraphicalElement(new Rectangle((int)this.getlocalisation().getX(), (int)this.getlocalisation().getY(), Color.GREEN, Color.WHITE, 5 , 5));
+    
 }
+}
+
+        
+        
+       
