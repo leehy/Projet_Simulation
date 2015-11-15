@@ -34,7 +34,7 @@ public class Boids extends Cellule {
         this.angle = 0;
         this.setEtat(0); //par défaut un boid est à l'état 0 
         this.rayonAction = r;
-         this.rayonSecurite = 10;
+         this.rayonSecurite = 100;
         this.vitesse = new Point();
         this.setLocalisation(x, y);
         this.vitesse.setLocation(Vx, Vy);
@@ -211,20 +211,41 @@ public class Boids extends Cellule {
     
     
 public void afficheBoid(GUISimulator gui){
-    //positionCyclique est la position cyclique du point en fonction de la fenêtre.
-    //Cela permet de l'afficher meme si ses coordonnées sont en dehors de la fenêtre.
-    Point positionCyclique = new Point();
+  
     //on affiche l'élément que si on est dans la fenêtre de gui
-    //if(this.getlocalisation().getX()<this.tailleFenetreLongueur && this.getlocalisation().getX()>0 
-          //  && this.getlocalisation().getY()<this.tailleFenetreHauteur && this.getlocalisation().getY()>0)
-        positionCyclique = access(this.getlocalisation());
+    if(this.getlocalisation().getX()<this.tailleFenetreLongueur && this.getlocalisation().getX()>0 
+          && this.getlocalisation().getY()<this.tailleFenetreHauteur && this.getlocalisation().getY()>0)
     gui.addGraphicalElement(new Rectangle(
-            (int)positionCyclique.getX(),
-            (int)positionCyclique.getY(), 
+            (int)this.getlocalisation().getX(),
+            (int)this.getlocalisation().getY(), 
             Color.GREEN, 
             Color.WHITE, 
             5 , 5));
     
+}
+
+//copiePile renvoie une copie de la pile mise en argument
+public Stack<Boids> copiePile(Stack<Boids> pileInitiale) {
+    Stack<Boids> nouvellePile = new Stack();
+    Stack<Boids> pileProvisoire = new Stack();
+    int taille = pileInitiale.size();
+    int index = 0;
+    Boids b;
+    //on copie dans la pile que l'on va renvoyer
+    while(index != taille) {
+        b = pileInitiale.pop();
+        nouvellePile.push(b);
+        pileProvisoire.push(b);
+        index ++;
+    }
+    //on remet dans la pile initiale les élément de la pile
+    index = 0;
+     while(index != taille) {
+        b = pileProvisoire.pop();
+        pileInitiale.push(b);
+        index ++;
+     }
+     return nouvellePile;
 }
 }
 
