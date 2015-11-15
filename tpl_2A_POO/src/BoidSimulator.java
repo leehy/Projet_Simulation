@@ -28,10 +28,10 @@ public class BoidSimulator implements Simulable {
         hauteur = h;
         rayon = r;
         
-        hachage = new Stack [h/r][l/r];
+        hachage = new Stack [l/r][h/r];
         
-        for (int i = 0; i < h/r; i++) {
-            for (int j = 0; j < l/r; j++) {
+        for (int i = 0; i < l/r; i++) {
+            for (int j = 0; j < h/r; j++) {
                 hachage[i][j] = new Stack<Boids> (); //Initialise le tableau de jeu avec des piles de Boids
             }
         }
@@ -145,8 +145,8 @@ public class BoidSimulator implements Simulable {
     }
     
     private void affiche (){
-        for (int i = 0; i < hauteur/rayon; i++) {
-            for (int j = 0; j < longueur/rayon; j++) {
+        for (int i = 0; i < longueur/rayon; i++) {
+            for (int j = 0; j < hauteur/rayon; j++) {
                 auxAffiche (hachage[i][j]);
             }
         }
@@ -168,8 +168,8 @@ public class BoidSimulator implements Simulable {
     }
     
     private void afficheNext (){
-        for (int i = 0; i < hauteur/rayon; i++) {
-            for (int j = 0; j < longueur/rayon; j++) {
+        for (int i = 0; i < longueur/rayon; i++) {
+            for (int j = 0; j < hauteur/rayon; j++) {
                 auxAfficheNext (hachage[i][j], copiePile (hachage[i][j])); 
             }
         }
@@ -188,8 +188,8 @@ public class BoidSimulator implements Simulable {
         GraphicalElement e = new Rectangle(l/2,h/2, Color.RED, Color.BLACK, l,h);
         gui.addGraphicalElement(e);
         
-        for (int i = 0; i < hauteur/rayon; i++) {
-            for (int j = 0; j < longueur/rayon; j++) {
+        for (int i = 0; i < longueur/rayon; i++) {
+            for (int j = 0; j < hauteur/rayon; j++) {
                 hachage[i][j] = new Stack<Boids> (); //Initialise le tableau de jeu avec des piles de Boids
             }
         }
@@ -202,11 +202,11 @@ public class BoidSimulator implements Simulable {
         //ajoute (250,250);
         
         
-        for (int ici = 0; ici <= NbBoids; ici++){
+        for (int ici = 0; ici < NbBoids; ici++){
             System.out.println (ici);
             System.out.println (l*ici/50);
             System.out.println (h*ici/50);
-            ajoute (h*ici/NbBoids,l*ici/NbBoids);
+            ajoute (l*ici/NbBoids,h*ici/NbBoids);
         }
         
         System.out.println ("fin des ajouts");
