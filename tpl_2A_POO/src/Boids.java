@@ -198,7 +198,9 @@ public class Boids extends Cellule {
     }
 
 public void afficheBoid(GUISimulator gui){
-    if(this.getlocalisation().getX()<this.tailleFenetreLongueur && this.getlocalisation().getX()>0 )
+    //on affiche l'élément que si on est dans la fenêtre de gui
+    if(this.getlocalisation().getX()<this.tailleFenetreLongueur && this.getlocalisation().getX()>0 
+            && this.getlocalisation().getY()<this.tailleFenetreHauteur && this.getlocalisation().getY()>0)
     gui.addGraphicalElement(new Rectangle(
             (int)this.getlocalisation().getX(),
             (int)this.getlocalisation().getY(), 
