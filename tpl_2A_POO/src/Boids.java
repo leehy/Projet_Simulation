@@ -9,6 +9,7 @@ import gui.*;
 import java.awt.Color;
 import java.util.*;
 import java.awt.Point;
+import static java.lang.Math.abs;
 import java.util.Vector;
 import static java.lang.Math.atan;
 
@@ -30,11 +31,11 @@ public class Boids extends Cellule {
    
       //ce constructeur crée un Boids sans angle, avec un rayonAction de 100, un rayonSecurite de 10 une vitesse (Vx,Vy)
       //une position (x,y), sans voisins, avec une taille de fenetre gui de tailleHauteur et tailleLargeur
-      public Boids(int x, int y, int Vx, int Vy, int r, int tailleHauteur, int tailleLongueur) {
+      public Boids(int x, int y, int Vx, int Vy, int r, int tailleLongueur, int tailleHauteur) {
         this.angle = 0;
         this.setEtat(0); //par défaut un boid est à l'état 0 
         this.rayonAction = r;
-         this.rayonSecurite = 100;
+         this.rayonSecurite = 1000;
         this.vitesse = new Point();
         this.setLocalisation(x, y);
         this.vitesse.setLocation(Vx, Vy);
@@ -85,6 +86,7 @@ public class Boids extends Cellule {
                //si oui on l'ajoute dans la liste des voisins
                this.voisins.push(b);
            setVoisins(PileVoisinsPotentiels);
+           System.out.println(this.voisins.size());
         }
         catch(EmptyStackException e) {}
             
@@ -144,11 +146,16 @@ public class Boids extends Cellule {
         double x = 0;
         double y = 0;
         int taille = this.voisins.size();
+        System.out.println(taille);
         while (index < taille) {
-            if (this.distanceCarre(this.voisins.get(index).getlocalisation()) < this.rayonSecurite*this.rayonSecurite) {
+            System.out.println("caca");
+            if (this.distanceCarre(this.voisins.get(index).getlocalisation()) < this.rayonSecurite*this.rayonSecurite) 
+            //si on est trop près du boid voisin
+            {
                 x = this.getlocalisation().getX() - this.voisins.get(index).getlocalisation().getX();
                 y = this.getlocalisation().getY() - this.voisins.get(index).getlocalisation().getY();
-                deplacement.setLocation(deplacement.getX() - x, deplacement.getY() - y);
+                //ainsi le vecteur de deplacement sera pour chaque boid dans le sens opposé de l'autre boid
+                deplacement.setLocation(deplacement.getX() + x, deplacement.getY() + y);
             }
             index++;
         }
@@ -183,8 +190,8 @@ public class Boids extends Cellule {
 //il faut lui envoyer une liste de voisins potentiels afin qu'il calcule les véritables voisins et ainsi que les règles puissent être appliqués    
     public void moveBoid(Stack<Boids> PileVoisinsPotentiels) {
         this.setVoisins(PileVoisinsPotentiels);
-        this.vitesse.setLocation(this.vitesse.getX() + this.regle1().getX() + this.regle2().getX() + this.regle3().getX(),
-                this.vitesse.getY() + this.regle1().getY() + this.regle2().getY() + this.regle3().getY());
+        this.vitesse.setLocation(this.vitesse.getX()  /*this.regle1().getX() */+ this.regle2().getX()  /*this.regle3().getX()*/,
+                this.vitesse.getY()/* + this.regle1().getY()*/ + this.regle2().getY()/* + this.regle3().getY()*/);
         this.setLocalisation(this.getlocalisation().getX() + this.vitesse.getX(),
                 this.getlocalisation().getY() + this.vitesse.getY());
         this.voisins.clear(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
