@@ -25,11 +25,11 @@ public class TestBoids {
     B.add(b2);
     B.add(b3);
     
-   System.out.println(b.toString());
+  
    b.moveBoid(B);
-   System.out.println(b.toString());
+
    b.moveBoid(B);
-   System.out.println(b.toString());
+  
 }
 
 }

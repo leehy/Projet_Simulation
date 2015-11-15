@@ -81,7 +81,6 @@ public class Boids extends Cellule {
 
     //setVoisins récupère une pile de voisins potentiels et rempli la pile des voisins
     public void setVoisins(Stack<Boids> PileVoisinsPotentiels) {
-                    System.out.println(PileVoisinsPotentiels.size());
 
         try {
                         
@@ -138,8 +137,8 @@ public class Boids extends Cellule {
             deplacement.setLocation(this.centreDeMasse().getX() - this.getlocalisation().getX(),
                     this.centreDeMasse().getY() - this.getlocalisation().getY());
         }
-        deplacement.setLocation((double)(deplacement.getX()/10 ),(double) (deplacement.getY()/10 ));
-         return deplacement;
+        deplacement.setLocation((deplacement.getX()/10 ), (deplacement.getY()/10 ));
+        return deplacement;
     }
 
     //distanceCarre renvoie la distance au carré du boid concerné à un point donné p
