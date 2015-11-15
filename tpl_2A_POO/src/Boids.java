@@ -137,7 +137,7 @@ public class Boids extends Cellule {
             deplacement.setLocation(this.centreDeMasse().getX() - this.getlocalisation().getX(),
                     this.centreDeMasse().getY() - this.getlocalisation().getY());
         }
-        deplacement.setLocation((deplacement.getX()/5 ), (deplacement.getY()/5 ));
+        deplacement.setLocation((deplacement.getX()/100 ), (deplacement.getY()/100 ));
         return deplacement;
     }
 
@@ -187,11 +187,13 @@ public class Boids extends Cellule {
     public Point regle3() {
         Point deplacement = new Point();
         //la regle 3 ne s'applique pas si il n'y a pas de voisins
-        if(this.voisins.size() != 0)     
+        if(this.voisins.size() != 0)   {  
         deplacement.setLocation(this.vitesseMoyenne().getX() - this.vitesse.getX(),
                 this.vitesseMoyenne().getY() - this.vitesse.getY());
         deplacement.setLocation(deplacement.getX() / 8, deplacement.getY() / 8);
+        }
         return deplacement;
+       
     }
 
 //moveBoid permet de mettre le boid dans l'état suivant en terme de position et de vitesse suivant les différentes règles définies.
