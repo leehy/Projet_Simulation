@@ -155,7 +155,7 @@ public class BoidSimulator implements Simulable {
         GraphicalElement e = new Rectangle(l/2,h/2, Color.RED, Color.BLACK, l,h);
         gui.addGraphicalElement(e);
     
-        for (int ici = 0; ici <= 100; ici++){
+        for (int ici = 0; ici <= 10; ici++){
             System.out.println (ici);
             ajoute (l*ici/100,h*ici/100);
         }

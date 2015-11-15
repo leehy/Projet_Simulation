@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.util.*;
 import java.awt.Point;
 import java.util.Vector;
+import static java.lang.Math.atan;
 
 /**
  *
@@ -17,7 +18,7 @@ import java.util.Vector;
  */
 public class Boids extends Cellule {
 
-    private int angle;
+    private double angle;
     private Point vitesse;
     //rayonAction est le rayon au delà duquel les autres boids ne sont plus concernés comme des voisins
     private int rayonAction;
@@ -43,7 +44,7 @@ public class Boids extends Cellule {
     }
       
       
-    public int getAngle() {
+    public double getAngle() {
         return this.angle;
     }
     
@@ -90,9 +91,9 @@ public class Boids extends Cellule {
     } 
     
     
-    //setAngle permet de regler l'angle avec la verticale du boid
+    //setAngle permet de regler l'angle avec la verticale du boid. Elle renvoie un angle compris entre -Pi/2 et Pi/2
     public void setAngle(int valeur) {
-        this.angle = valeur;
+        this.angle = atan(vitesse.getX()/vitesse.getY());
     }
 
     //addVoisin permet d'ajouter un voisin à la liste de voisins
