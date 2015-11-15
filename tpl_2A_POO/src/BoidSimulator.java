@@ -180,7 +180,17 @@ public class BoidSimulator implements Simulable {
     }
     
     private void ajoute (int x, int y, int vx,int vy){
+        Boids b = new Boids (x,y,vx,vy,rayon,rayonDanger,longueur,hauteur);
+        addBoid (b);
+    }
+    
+    private void ajoutePoisson (int x, int y, int vx,int vy){
         Poisson b = new Poisson (x,y,vx,vy,rayon,rayonDanger,longueur,hauteur);
+        addBoid (b);
+    }
+    
+    private void ajouteLumiere (int x, int y, int vx,int vy){
+        Lumiere b = new Lumiere (x,y,vx,vy,rayon,rayonDanger,longueur,hauteur);
         addBoid (b);
     }
     
@@ -201,14 +211,14 @@ public class BoidSimulator implements Simulable {
             
         //ajoute (l*9/10,h*9/10);
         //ajoute (200,225,1,1);
-        //ajoute (500,200);
+        ajouteLumiere (500,300,10,10);
         //ajoute (250,25);
         //ajoute (200,250);
         
         
         for (int ici = 0; ici < (2*NbBoids); ici++){
             for (int icj = 0; icj < NbBoids; icj++){
-                ajoute (l*ici/(2*NbBoids),h*icj/NbBoids,0,0);
+                ajoutePoisson (l*ici/(2*NbBoids),h*icj/NbBoids,0,0);
             }
         }
         
