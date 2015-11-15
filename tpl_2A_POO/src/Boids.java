@@ -162,7 +162,8 @@ public class Boids extends Cellule {
         Point vitesse = new Point();
         int taille = this.voisins.size();
         while (index != taille) {
-            vitesse.setLocation(vitesse.getX() + this.voisins.get(index).vitesse.getX(), vitesse.getY() + this.voisins.get(index).vitesse.getY());
+            vitesse.setLocation(vitesse.getX() + this.voisins.get(index).vitesse.getX(), 
+                    vitesse.getY() + this.voisins.get(index).vitesse.getY());
             index++;
         }
         vitesse.setLocation(vitesse.getX() / taille, vitesse.getY() / taille);
