@@ -31,11 +31,11 @@ public class Boids extends Cellule {
 
       //ce constructeur crée un Boids sans angle, avec un rayonAction de 100, un rayonSecurite de 10 une vitesse (Vx,Vy)
     //une position (x,y), sans voisins, avec une taille de fenetre gui de tailleHauteur et tailleLargeur
-    public Boids(int x, int y, int Vx, int Vy, int r, int tailleLongueur, int tailleHauteur) {
+    public Boids(int x, int y, int Vx, int Vy, int r, int rSecurite, int tailleLongueur, int tailleHauteur) {
         this.angle = 0;
         this.setEtat(0); //par défaut un boid est à l'état 0 
         this.rayonAction = r;
-        this.rayonSecurite = 10;
+        this.rayonSecurite = rSecurite;
         this.vitesse = new Point();
         this.setLocalisation(x, y);
         this.vitesse.setLocation(Vx, Vy);
@@ -186,6 +186,8 @@ public class Boids extends Cellule {
     //regle3 renvoie un point qui contient les valeurs de la nouvelle vitesse du boid du à cette règle
     public Point regle3() {
         Point deplacement = new Point();
+        //la regle 3 ne s'applique pas si il n'y a pas de voisins
+        if(this.voisins.size() != 0)     
         deplacement.setLocation(this.vitesseMoyenne().getX() - this.vitesse.getX(),
                 this.vitesseMoyenne().getY() - this.vitesse.getY());
         deplacement.setLocation(deplacement.getX() / 8, deplacement.getY() / 8);
@@ -196,8 +198,8 @@ public class Boids extends Cellule {
 //il faut lui envoyer une liste de voisins potentiels afin qu'il calcule les véritables voisins et ainsi que les règles puissent être appliqués    
     public void moveBoid(Stack<Boids> PileVoisinsPotentiels) {
         this.setVoisins(PileVoisinsPotentiels);
-        this.vitesse.setLocation(this.vitesse.getX() + this.regle1().getX() /* + this.regle2().getX()  /*this.regle3().getX()*/,
-                this.vitesse.getY() + this.regle1().getY() /* + this.regle2().getY()/* + this.regle3().getY()*/);
+        this.vitesse.setLocation(this.vitesse.getX() + this.regle1().getX() + this.regle2().getX()  /*this.regle3().getX()*/,
+                this.vitesse.getY() + this.regle1().getY() + this.regle2().getY()/* + this.regle3().getY()*/);
         this.setLocalisation(this.getlocalisation().getX() + this.vitesse.getX(),
                 this.getlocalisation().getY() + this.vitesse.getY());
         this.voisins.clear(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
