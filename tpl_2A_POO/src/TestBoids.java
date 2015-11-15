@@ -12,10 +12,10 @@ import java.util.*;
 public class TestBoids {
     public static void main(String[] args) {
         
-    Boids b = new Boids(0,0,0,0,1000,1000);
-    Boids b1 = new Boids(2,5 , 14, 2, 1000, 1000);
-    Boids b2 = new Boids(1,3, 2, 5, 1000, 1000);
-    Boids b3 = new Boids(2,6, 17, 19, 1000 , 1000);
+    Boids b = new Boids(0,0,0,0,50, 1000,1000);
+    Boids b1 = new Boids(2,5 , 14, 2, 50, 1000, 1000);
+    Boids b2 = new Boids(1,3, 2, 5, 50, 1000, 1000);
+    Boids b3 = new Boids(2,6, 17, 19, 50, 1000 , 1000);
     
     b.addVoisin(b1);
     b.addVoisin(b2);

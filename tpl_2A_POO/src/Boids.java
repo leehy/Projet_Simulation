@@ -35,7 +35,7 @@ public class Boids extends Cellule {
         this.angle = 0;
         this.setEtat(0); //par défaut un boid est à l'état 0 
         this.rayonAction = r;
-         this.rayonSecurite = 1000;
+         this.rayonSecurite = 10;
         this.vitesse = new Point();
         this.setLocalisation(x, y);
         this.vitesse.setLocation(Vx, Vy);
@@ -86,7 +86,6 @@ public class Boids extends Cellule {
                //si oui on l'ajoute dans la liste des voisins
                this.voisins.push(b);
            setVoisins(PileVoisinsPotentiels);
-           System.out.println(this.voisins.size());
         }
         catch(EmptyStackException e) {}
             
@@ -146,9 +145,7 @@ public class Boids extends Cellule {
         double x = 0;
         double y = 0;
         int taille = this.voisins.size();
-        System.out.println(taille);
         while (index < taille) {
-            System.out.println("caca");
             if (this.distanceCarre(this.voisins.get(index).getlocalisation()) < this.rayonSecurite*this.rayonSecurite) 
             //si on est trop près du boid voisin
             {
@@ -190,8 +187,8 @@ public class Boids extends Cellule {
 //il faut lui envoyer une liste de voisins potentiels afin qu'il calcule les véritables voisins et ainsi que les règles puissent être appliqués    
     public void moveBoid(Stack<Boids> PileVoisinsPotentiels) {
         this.setVoisins(PileVoisinsPotentiels);
-        this.vitesse.setLocation(this.vitesse.getX()  /*this.regle1().getX() */+ this.regle2().getX()  /*this.regle3().getX()*/,
-                this.vitesse.getY()/* + this.regle1().getY()*/ + this.regle2().getY()/* + this.regle3().getY()*/);
+        this.vitesse.setLocation(this.vitesse.getX() + this.regle1().getX() /* + this.regle2().getX()  /*this.regle3().getX()*/,
+                this.vitesse.getY() + this.regle1().getY() /* + this.regle2().getY()/* + this.regle3().getY()*/);
         this.setLocalisation(this.getlocalisation().getX() + this.vitesse.getX(),
                 this.getlocalisation().getY() + this.vitesse.getY());
         this.voisins.clear(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
