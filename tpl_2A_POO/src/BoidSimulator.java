@@ -15,7 +15,7 @@ import java.awt.Color;
  */
 public class BoidSimulator implements Simulable {
     
-    private Stack<Boids> hachage [][];
+    private Stack<Boids> hachage [][];  
     private int hauteur;
     private int longueur;
     private int NbBoids;
@@ -149,7 +149,7 @@ public class BoidSimulator implements Simulable {
     }
     
     private void ajoute (int x, int y){
-        Boids b = new Boids (x,y,0,0,hauteur,longueur);
+        Boids b = new Boids (x,y,0,0,hauteur/rayon*rayon,longueur/rayon*rayon);
         addBoid (b);
     }
     
