@@ -149,7 +149,7 @@ public class BoidSimulator implements Simulable {
     }
     
     private void ajoute (int x, int y){
-        Boids b = new Boids (x,y,0,0,hauteur/rayon*rayon,longueur/rayon*rayon);
+        Boids b = new Boids (x,y,rayon,0,0,hauteur/rayon*rayon,longueur/rayon*rayon);
         addBoid (b);
     }
     
