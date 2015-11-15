@@ -158,8 +158,9 @@ public class BoidSimulator implements Simulable {
         try {
         Boids b = parcours.pop ();  //On prend le premier élément de la pile
         
-        delBoid (b);    //On supprime l'élément de la table de hachage
+        delBoid (b);    //On supprime cet élément de la table de hachage
         b.moveBoid(voisinsPotentiels(b));   //On calcule sa nouvelle position
+        System.out.println(voisinsPotentiels(b));
         addBoid (b);    //On le met dans sa nouvelle position dans la table de hachage
         
         b.afficheBoid (gui);    //On l'affiche
@@ -198,10 +199,10 @@ public class BoidSimulator implements Simulable {
     
             
         //ajoute (l*9/10,h*9/10);
-        ajoute (200,500);
-        ajoute (500,200);
+        ajoute (200,225);
+        //ajoute (500,200);
         //ajoute (250,25);
-        ajoute (250,250);
+        ajoute (200,250);
         
         
         /*for (int ici = 0; ici < NbBoids; ici++){
