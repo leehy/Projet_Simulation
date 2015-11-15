@@ -200,7 +200,7 @@ public class BoidSimulator implements Simulable {
     
             
         //ajoute (l*9/10,h*9/10);
-        ajoute (200,225,1,1);
+        //ajoute (200,225,1,1);
         //ajoute (500,200);
         //ajoute (250,25);
         //ajoute (200,250);
