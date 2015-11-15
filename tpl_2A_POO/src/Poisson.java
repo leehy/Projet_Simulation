@@ -6,6 +6,7 @@
 package src;
 import gui.*;
 import java.awt.Color;
+import java.awt.Point;
 import java.util.*;
 
 /**
@@ -43,4 +44,25 @@ Color couleurCorps;
         gui.addGraphicalElement(tete);
     }
     
+
+@Override
+//on override la regle1 de sorte a ce que si le poisson a dans ses voisins une lumiere
+//il sera vraiment très attiré par la lumière, beaucoup plus que par ses amis poissons 
+//(il est attiré par les poisssons de l'ordre de 1% et par la lumière de l'ordre de 100%)
+public Point regle1() {
+    super.regle1();
+int index = 0;
+Point deplacement = new Point();
+while(index != this.voisins.size()) {
+    
+if(this.voisins.get(index).getEtat() == 2) {
+    deplacement.setLocation(deplacement.getX() + this.voisins.get(index).getlocalisation().getX(),
+            deplacement.getY()+ this.voisins.get(index).getlocalisation().getY());
 }
+index ++;
+}
+    return deplacement;
+}
+}
+
+

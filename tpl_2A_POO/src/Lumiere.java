@@ -9,6 +9,7 @@ import gui.GUISimulator;
 import gui.GraphicalElement;
 import gui.Oval;
 import java.awt.Color;
+import java.awt.Point;
 
 /**
  *
@@ -28,6 +29,27 @@ public class Lumiere extends Boids {
                 (int)this.getlocalisation().getY(),
                 Color.WHITE, Color.RED, 
                 25, 25);
+    }
+    
+    
+    //on override les 3 regles de sorte a ce qu'une lumiere soit fixe dans l'espace
+    //elle ne bouge pas dans l'ocean. Son but est uniquement de troubler les poissons
+    @Override
+    public Point regle1() {
+        return new Point(0,0);
+        
+    }
+    
+     @Override
+    public Point regle2() {
+        return new Point(0,0);
+        
+    }
+    
+     @Override
+    public Point regle3() {
+        return new Point(0,0);
+        
     }
     
 }

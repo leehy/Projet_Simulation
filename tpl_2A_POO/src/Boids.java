@@ -25,7 +25,7 @@ public class Boids extends Cellule {
     private int rayonAction;
     //rayonSécurité est le rayon en-decà duquel les autres boids sont concernés comme trop proche, il faut donc changer de direction
     private int rayonSecurite;
-    private Stack<Boids> voisins;
+    protected Stack<Boids> voisins;
     private int tailleFenetreHauteur;
     private int tailleFenetreLongueur;
 
