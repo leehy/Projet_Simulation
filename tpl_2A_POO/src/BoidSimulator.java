@@ -128,28 +128,31 @@ public class BoidSimulator implements Simulable {
         }
     }
     
-    private void auxAfficheNext (Stack<Boids> hach){
+    private void auxAfficheNext (Stack<Boids> hach, Stack<Boids> parcours){
         try {
-        Boids b = hach.pop (); 
-        b.moveBoid(voisinsPotentiels(b));
-        b.afficheBoid (gui);
-        auxAfficheNext (hach);
-        hach.push(b);
+        Boids b = parcours.pop ();  //On prend le premier élément de la pile
+        
+        delBoid (b);    //On supprime l'élément de la table de hachage
+        b.moveBoid(voisinsPotentiels(b));   //On calcule sa nouvelle position
+        addBoid (b);    //On le met dans sa nouvelle position dans la table de hachage
+        
+        b.afficheBoid (gui);    //On l'affiche
+        auxAfficheNext (hach,parcours); //On appelle récursivement la fonction
         }
-        catch (EmptyStackException e){
+        catch (EmptyStackException e){  //Quand on arrive au bout de la pile, on s'arrête
         }
     }
     
     private void afficheNext (){
         for (int i = 0; i < hauteur/rayon; i++) {
             for (int j = 0; j < longueur/rayon; j++) {
-                auxAfficheNext (hachage[i][j]); 
+                auxAfficheNext (hachage[i][j], hachage[i][j].copie ()); 
             }
         }
     }
     
     private void ajoute (int x, int y){
-        Boids b = new Boids (x,y,rayon,0,0,hauteur/rayon*rayon,longueur/rayon*rayon);
+        Boids b = new Boids (x,y,0,0,rayon,hauteur/rayon*rayon,longueur/rayon*rayon);
         addBoid (b);
     }
     
@@ -171,6 +174,8 @@ public class BoidSimulator implements Simulable {
             System.out.println (ici);
             ajoute (l*ici/50,h*ici/50);
         }
+        
+        System.out.println ("fin des ajouts");
             
         //ajoute (l,h);
         ajoute (200,500);
