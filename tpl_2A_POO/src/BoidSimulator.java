@@ -22,10 +22,10 @@ public class BoidSimulator implements Simulable {
     private int rayon;
     private GUISimulator gui;
     
-    BoidSimulator (int n, int h, int l, int r){
+    BoidSimulator (int n, int l, int h, int r){
         NbBoids = n;
-        hauteur = h;
         longueur = l;
+        hauteur = h;
         rayon = r;
         
         hachage = new Stack [h/r][l/r];
@@ -36,7 +36,7 @@ public class BoidSimulator implements Simulable {
             }
         }
         
-        this.gui = new GUISimulator(l/r*r+10, h/r*r+10, Color.BLACK);
+        this.gui = new GUISimulator(h/r*r+10, l/r*r+10, Color.BLACK);
         
     }
     
@@ -176,7 +176,7 @@ public class BoidSimulator implements Simulable {
     }
     
     private void ajoute (int x, int y){
-        Boids b = new Boids (x,y,0,0,rayon,hauteur/rayon*rayon,longueur/rayon*rayon);
+        Boids b = new Boids (x,y,0,0,rayon,longueur,hauteur);
         addBoid (b);
     }
     
@@ -194,18 +194,23 @@ public class BoidSimulator implements Simulable {
             }
         }
     
-        for (int ici = 0; ici <= 50; ici++){
+            
+        ajoute (l*9/10,h*9/10);
+        //ajoute (200,500);
+        //ajoute (500,200);
+        //ajoute (250,25);
+        //ajoute (250,250);
+        
+        
+        for (int ici = 0; ici <= NbBoids; ici++){
             System.out.println (ici);
-            ajoute (l*ici/50,h*ici/50);
+            System.out.println (l*ici/50);
+            System.out.println (h*ici/50);
+            ajoute (h*ici/NbBoids,l*ici/NbBoids);
         }
         
         System.out.println ("fin des ajouts");
-            
-        //ajoute (l,h);
-        ajoute (200,500);
-        ajoute (500,200);
-        ajoute (250,25);
-        //ajoute (250,250);
+        
         affiche ();
     }
     
