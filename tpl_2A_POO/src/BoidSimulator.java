@@ -45,8 +45,8 @@ public class BoidSimulator implements Simulable {
     }
     
     private void access (Point v){ //v doit être un couple (x,y)
-        v.x = mod (v.x,hauteur/rayon);
-        v.y = mod (v.y,longueur/rayon);
+        v.x = mod (v.x,longueur/rayon);
+        v.y = mod (v.y,hauteur/rayon);
     }
     
     private Point caseCorrespondante (Boids b){ //Calcule la position d'un boids dans le plateau
@@ -57,7 +57,9 @@ public class BoidSimulator implements Simulable {
     
     private void addBoid (Boids b) { //ajoute un boid à la table de hachage
         Point p = caseCorrespondante (b);
-        hachage [p.x][p.y].push (b);
+        if (p.x > 0 && p.y > 0 && p.x < longueur/rayon && p.y < hauteur/rayon){
+            hachage [p.x][p.y].push (b);
+        }
     }
     
     private Stack<Boids> auxDelete (Boids b, Stack<Boids> s1, Stack<Boids> s2){
@@ -195,19 +197,19 @@ public class BoidSimulator implements Simulable {
         }
     
             
-        ajoute (l*9/10,h*9/10);
-        //ajoute (200,500);
-        //ajoute (500,200);
+        //ajoute (l*9/10,h*9/10);
+        ajoute (200,500);
+        ajoute (500,200);
         //ajoute (250,25);
-        //ajoute (250,250);
+        ajoute (250,250);
         
         
-        for (int ici = 0; ici < NbBoids; ici++){
+        /*for (int ici = 0; ici < NbBoids; ici++){
             System.out.println (ici);
             System.out.println (l*ici/50);
             System.out.println (h*ici/50);
             ajoute (l*ici/NbBoids,h*ici/NbBoids);
-        }
+        }*/
         
         System.out.println ("fin des ajouts");
         
