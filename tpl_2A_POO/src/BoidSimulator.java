@@ -20,13 +20,15 @@ public class BoidSimulator implements Simulable {
     private int longueur;
     private int NbBoids;
     private int rayon;
+    private int rayonDanger;
     private GUISimulator gui;
     
-    BoidSimulator (int n, int l, int h, int r){
+    BoidSimulator (int n, int l, int h, int r, int rD){
         NbBoids = n;
         longueur = l;
         hauteur = h;
         rayon = r;
+        rayonDanger = rD;
         
         hachage = new Stack [l/r][h/r];
         
