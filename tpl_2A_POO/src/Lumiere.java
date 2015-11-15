@@ -27,7 +27,7 @@ public class Lumiere extends Boids {
     public void afficheBoid(GUISimulator gui) {
         GraphicalElement corps = new Oval((int)this.getlocalisation().getX(), 
                 (int)this.getlocalisation().getY(),
-                Color.WHITE, Color.RED, 
+                Color.WHITE, Color.WHITE, 
                 25, 25);
     }
     
