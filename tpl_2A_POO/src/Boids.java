@@ -190,7 +190,7 @@ public class Boids extends Cellule {
         if(this.voisins.size() != 0)   {  
         deplacement.setLocation(this.vitesseMoyenne().getX() - this.vitesse.getX(),
                 this.vitesseMoyenne().getY() - this.vitesse.getY());
-        deplacement.setLocation(deplacement.getX() / 8, deplacement.getY() / 8);
+        deplacement.setLocation(deplacement.getX()/8, deplacement.getY()/8);
         }
         return deplacement;
        
@@ -200,7 +200,7 @@ public class Boids extends Cellule {
 //il faut lui envoyer une liste de voisins potentiels afin qu'il calcule les véritables voisins et ainsi que les règles puissent être appliqués    
     public void moveBoid(Stack<Boids> PileVoisinsPotentiels) {
         this.setVoisins(PileVoisinsPotentiels);
-        this.vitesse.setLocation(this.vitesse.getX() + this.regle1().getX() + this.regle2().getX() + this.regle3().getX(),
+        this.vitesse.setLocation(this.vitesse.getX() + this.regle1().getX()  + this.regle2().getX() + this.regle3().getX(),
                 this.vitesse.getY() + this.regle1().getY() + this.regle2().getY()+ this.regle3().getY());
         this.setLocalisation(this.getlocalisation().getX() + this.vitesse.getX(),
                 this.getlocalisation().getY() + this.vitesse.getY());
