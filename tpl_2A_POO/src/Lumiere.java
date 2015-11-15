@@ -25,10 +25,11 @@ public class Lumiere extends Boids {
     
     @Override
     public void afficheBoid(GUISimulator gui) {
-        GraphicalElement corps = new Oval((int)this.getlocalisation().getX(), 
+        GraphicalElement lumiere = new Oval((int)this.getlocalisation().getX(), 
                 (int)this.getlocalisation().getY(),
-                Color.WHITE, Color.WHITE, 
-                25, 25);
+                Color.WHITE, Color.YELLOW, 
+                15, 15);
+        gui.addGraphicalElement(lumiere);
     }
     
     
