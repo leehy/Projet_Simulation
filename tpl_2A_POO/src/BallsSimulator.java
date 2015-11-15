@@ -9,6 +9,7 @@ import gui.GUISimulator;
 import gui.Simulable;
 import java.awt.Color;
 import gui.Oval;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.lang.Math;
 import static java.lang.Math.abs;
@@ -18,9 +19,10 @@ import static java.lang.Math.max;
  *
  * @author hyun
  */
-public class BallsSimulator implements Simulable {
+public class BallsSimulator extends Event implements Simulable {
 
     private Balls balls;
+    private Balls balls2;
     private GUISimulator gui;
 
     //Attribut pour controler la taille de la simulation
@@ -31,13 +33,70 @@ public class BallsSimulator implements Simulable {
     private int speedSimX;
     private int speedSimY;
 
+    // Attribut pour integrer le gestionnaire d'evenement
+    EventManager manager;
+    private ArrayList<Balls> ArrayOfBalls;
+    private int indexArrayOfBalls;
+
     public BallsSimulator() {
         this.balls = new Balls();
         this.sizeSimX = 500;
         this.sizeSimY = 500;
         this.gui = new GUISimulator(sizeSimX, sizeSimY, Color.BLACK);
-        this.speedSimX = 15;
-        this.speedSimY = 45;
+        this.speedSimX = 20;
+        this.speedSimY = 20;
+        this.manager = new EventManager();
+        this.ArrayOfBalls = new ArrayList<>();
+        this.ArrayOfBalls.add(this.balls);
+    }
+
+    public BallsSimulator(long date) {
+        super(date);
+        this.balls = new Balls();
+        this.sizeSimX = 500;
+        this.sizeSimY = 500;
+        this.gui = new GUISimulator(sizeSimX, sizeSimY, Color.BLACK);
+        this.speedSimX = 20;
+        this.speedSimY = 20;
+        this.manager = new EventManager();
+        this.ArrayOfBalls = new ArrayList<>();
+        this.ArrayOfBalls.add(this.balls);
+        
+    }
+
+    public BallsSimulator(Balls balls, int sizeSimX, int sizeSimY) {
+        this.balls = balls;
+        this.sizeSimX = sizeSimX;
+        this.sizeSimY = sizeSimY;
+    }
+
+    public BallsSimulator(Balls balls, int sizeSimX, int sizeSimY, int speedSimX, int speedSimY) {
+        this.balls = balls;
+        this.sizeSimX = sizeSimX;
+        this.sizeSimY = sizeSimY;
+        this.speedSimX = speedSimX;
+        this.speedSimY = speedSimY;
+    }
+
+    public BallsSimulator(Balls balls, int sizeSimX, int sizeSimY, int speedSimX, int speedSimY, GUISimulator gui) {
+        this.balls = balls;
+        this.sizeSimX = sizeSimX;
+        this.sizeSimY = sizeSimY;
+        this.speedSimX = speedSimX;
+        this.speedSimY = speedSimY;
+        this.gui = new GUISimulator(sizeSimX, sizeSimY, Color.BLACK);
+    }
+
+    public BallsSimulator(Balls balls, int sizeSimX, int sizeSimY, int speedSimX, int speedSimY, GUISimulator gui, EventManager manager) {
+        this.balls = balls;
+        this.sizeSimX = sizeSimX;
+        this.sizeSimY = sizeSimY;
+        this.speedSimX = speedSimX;
+        this.speedSimY = speedSimY;
+        this.gui = new GUISimulator(sizeSimX, sizeSimY, Color.BLACK);
+        this.manager = new EventManager();
+        this.ArrayOfBalls = new ArrayList<>();
+        this.ArrayOfBalls.add(this.balls);
     }
 
     public void setSizeSim(int sizeSimX, int sizeSimY) {
@@ -74,6 +133,10 @@ public class BallsSimulator implements Simulable {
         return this.balls;
     }
 
+    public EventManager getManager() {
+        return this.manager;
+    }
+
     @Override
     public void restart() {
         // index de parcours du tableau
@@ -100,221 +163,122 @@ public class BallsSimulator implements Simulable {
 
     @Override
     public void next() {
-        // Indice du tableau
-        int index = 0;
+        // On incremente le temps et on execute les prochains evenements prevu à la date CurrentDate + 1
+        this.manager.next();
+
+        /*
+         // Traitement du rebond lorsqu'on se retrouve sur le cote droit du simulateur
+         if (this.balls.getListPoint().get(index).getX() > this.getSizeSimX() && (this.balls.getListPoint().get(index).getY() < this.getSizeSimY() && this.balls.getListPoint().get(index).getY() > 0)) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
+         System.out.println("Test1");
+         } // Traitement du rebond lorsqu'on se retrouve sur le cote haut droit du simulateur
+         else if (this.balls.getListPoint().get(index).getX() >= this.getSizeSimX() && (this.balls.getListPoint().get(index).getY() <= 0)) {
+         System.out.println("Test1.1");
+         if (this.balls.getListPoint().get(index).getX() == this.getSizeSimX()) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
+         System.out.println("Test1.11");
+         } else if (this.balls.getListPoint().get(index).getY() == 0) {
+         this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+         System.out.println("Test1.12");
+         } else if (this.balls.getListPoint().get(index).getX() > this.getSizeSimX() && (this.balls.getListPoint().get(index).getY() < 0)) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+         }
+         System.out.println("Test1.13");
+         } // Traitement du rebond lorsqu'on se retrouve sur le cote gauche du simulateur
+         else if (this.balls.getListPoint().get(index).getX() < 0 && (this.balls.getListPoint().get(index).getY() < this.getSizeSimY() && this.balls.getListPoint().get(index).getY() > 0)) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
+         System.out.println("Test2");
+         } // Traitement du rebond lorsqu'on se retrouve sur le cote bas droit du simulateur
+         else if (this.balls.getListPoint().get(index).getX() >= this.getSizeSimX() && (this.balls.getListPoint().get(index).getY() >= this.getSizeSimY())) {
+         System.out.println("Test2.1");
+         if (this.balls.getListPoint().get(index).getX() == this.getSizeSimX()) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
+         System.out.println("Test2.11");
+         } else if (this.balls.getListPoint().get(index).getY() == this.getSizeSimY()) {
+         this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+         System.out.println("Test2.12");
+         } else if (this.balls.getListPoint().get(index).getX() > this.getSizeSimX() && (this.balls.getListPoint().get(index).getY() > this.getSizeSimY())) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+         }
+         System.out.println("Test2.13");
+
+         if (this.balls.getSpeedCoeffX(index) > 0) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
+         } else if (this.balls.getSpeedCoeffY(index) > 0) {
+         this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+         }
+         } // Traitement du rebond lorsqu'on est sur le cote bas du simulateur
+         else if (this.balls.getListPoint().get(index).getY() > this.getSizeSimY() && this.balls.getListPoint().get(index).getX() < this.getSizeSimX() && this.balls.getListPoint().get(index).getX() > 0) {
+         this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+
+         System.out.println("Test3");
+         } // Traitement du rebond lorsqu'on se retrouve sur le cote bas gauche du simulateur
+         else if (this.balls.getListPoint().get(index).getX() <= 0 && (this.balls.getListPoint().get(index).getY() >= this.getSizeSimY())) {
+         System.out.println("Test3.1");
+         if (this.balls.getListPoint().get(index).getX() == 0) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
+         System.out.println("Test3.11");
+         } else if (this.balls.getListPoint().get(index).getY() == this.getSizeSimY()) {
+         this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+         System.out.println("Test3.12");
+         } else if (this.balls.getListPoint().get(index).getX() < 0 && (this.balls.getListPoint().get(index).getY() > this.getSizeSimY())) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+         }
+         System.out.println("Test3.13");
+         } //Traitement du rebond lorsqu'on est sur le cote haut du simulateur
+         else if (this.balls.getListPoint().get(index).getY() < 0 && this.balls.getListPoint().get(index).getX() < this.getSizeSimX() && this.balls.getListPoint().get(index).getX() > 0) {
+         this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+         System.out.println("Test4");
+         } // Traitement du rebond lorsqu'on se retrouve sur le cote haut gauche du simulateur
+         else if (this.balls.getListPoint().get(index).getY() <= 0 && (this.balls.getListPoint().get(index).getX() <= 0)) {
+         System.out.println("Test4.1");
+         if (this.balls.getListPoint().get(index).getX() == 0) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
+         System.out.println("Test4.11");
+         } else if (this.balls.getListPoint().get(index).getY() == 0) {
+         this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+         System.out.println("Test4.12");
+         } else if (this.balls.getListPoint().get(index).getX() < 0 && (this.balls.getListPoint().get(index).getY() < 0)) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+         }
+         System.out.println("Test4.13");
+         } else if ((this.balls.getListPoint().get(index).getX() == 0 && this.balls.getListPoint().get(index).getY() == 0)
+         || (this.balls.getListPoint().get(index).getX() == 0 && this.balls.getListPoint().get(index).getY() == this.getSizeSimY())
+         || (this.balls.getListPoint().get(index).getX() == this.getSizeSimX() && this.balls.getListPoint().get(index).getY() == 0)
+         || (this.balls.getListPoint().get(index).getX() == this.getSizeSimX() && this.balls.getListPoint().get(index).getY() == this.getSizeSimY())) {
+         this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
+         System.out.println("Test5");
+         }
+            
+         System.out.println("SpeedX de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffX(index));
+         System.out.println("SpeedY de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffY(index));
+         index++;
+         */
+    }
+
+    @Override
+    public void execute() {
+        // Indice de ListPoint 
+        int indexArray = 0;
+        // Indice du tableau de Balls
+        this.indexArrayOfBalls = 0;
         // On efface l'écran
         gui.reset();
         // On translate la balle
-        this.balls.translateBalls(this.getSpeedX(), this.getSpeedY());
-
-        //Traitement dans le cas ou il y a des balles aux coordonnees negatives
-        /*while (this.balls.getSizeList() != index) {
-            if (this.balls.getListPoint().get(index).getX() < 0 || this.balls.getListPoint().get(index).getY() < 0) {
-                while (this.balls.getListPoint().get(index).getX() < 0 || this.balls.getListPoint().get(index).getY() < 0) {
-                    this.balls.getListPoint().get(index).setLocation(
-                            (int) (this.balls.getListPoint().get(index).getX() + abs(0.1 * this.getSpeedX())), (int) (this.balls.getListPoint().get(index).getY() + abs(0.1 * this.getSpeedY())));
-                }
-            }
-            index++;
-        } */
-        // On affiche
-        System.out.println(this.balls.toString());
-
-        while (this.balls.getSizeList() != index) {
-            // Hors ecran simulation 
-            int maxPrevCoord = max((int) (this.balls.getListPoint().get(index).getX() - abs(this.speedSimX)), (int) (this.balls.getListPoint().get(index).getY() - abs(this.speedSimY)));
-
-            gui.addGraphicalElement(
-                    new Oval((int) (this.balls.getListPoint().get(index).getX()), (int) (this.balls.getListPoint().get(index).getY()),
-                            Color.decode("#FFFFFF"), Color.decode("#FFFFFF"), 20, 20));
-            
-            // Traitement du rebond lorsqu'on se retrouve sur le cote droit du simulateur
-            if (this.balls.getListPoint().get(index).getX() > this.getSizeSimX() && (this.balls.getListPoint().get(index).getY() < this.getSizeSimY() && this.balls.getListPoint().get(index).getY()>0)) {
-                this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
-                System.out.println("Test1");
-            } 
-            
-            // Traitement du rebond lorsqu'on se retrouve sur le cote haut droit du simulateur
-            else if (this.balls.getListPoint().get(index).getX() >= this.getSizeSimX() && (this.balls.getListPoint().get(index).getY() <= 0)) {
-                System.out.println("Test1.1");
-                if(this.balls.getListPoint().get(index).getX() == this.getSizeSimX() ){
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
-                    System.out.println("Test1.11");
-                }
-                else if(this.balls.getListPoint().get(index).getY()==0){
-                    this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                    System.out.println("Test1.12");
-                }
-                
-                else if(this.balls.getListPoint().get(index).getX() > this.getSizeSimX() && (this.balls.getListPoint().get(index).getY() < 0))
-                this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                System.out.println("Test1.13");
-            } 
-            
-            // Traitement du rebond lorsqu'on se retrouve sur le cote gauche du simulateur
-            else if (this.balls.getListPoint().get(index).getX() < 0 && (this.balls.getListPoint().get(index).getY() < this.getSizeSimY() && this.balls.getListPoint().get(index).getY() >0)){
-                this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
-                System.out.println("Test2");
-            } 
-            
-            // Traitement du rebond lorsqu'on se retrouve sur le cote bas droit du simulateur
-            else if (this.balls.getListPoint().get(index).getX() >= this.getSizeSimX() && (this.balls.getListPoint().get(index).getY() >= this.getSizeSimY())) {
-                System.out.println("Test2.1");
-                if(this.balls.getListPoint().get(index).getX() == this.getSizeSimX() ){
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
-                    System.out.println("Test2.11");
-                }
-                else if(this.balls.getListPoint().get(index).getY()==this.getSizeSimY()){
-                    this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                    System.out.println("Test2.12");
-                }
-                
-                else if(this.balls.getListPoint().get(index).getX() > this.getSizeSimX() && (this.balls.getListPoint().get(index).getY() > this.getSizeSimY()))
-                this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                System.out.println("Test2.13");
-                
-                if( this.balls.getSpeedCoeffX(index) >0 ){
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
-                }
-                else if( this.balls.getSpeedCoeffY(index) > 0 ){
-                    this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                }
-            }
-
-            // Traitement du rebond lorsqu'on est sur le cote bas du simulateur
-            else if (this.balls.getListPoint().get(index).getY() > this.getSizeSimY() && this.balls.getListPoint().get(index).getX() < this.getSizeSimX()  && this.balls.getListPoint().get(index).getX() >0) {
-                this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                
-                System.out.println("Test3");
+        while (indexArrayOfBalls != this.ArrayOfBalls.size()) {
+            this.ArrayOfBalls.get(this.indexArrayOfBalls).translateBalls(this.getSpeedX(), this.getSpeedY());
+            // On affiche sur l'écran
+            System.out.println(this.ArrayOfBalls.get(this.indexArrayOfBalls).toString());
+            // On affiche dans le simulateur
+            while (indexArray != this.ArrayOfBalls.get(this.indexArrayOfBalls).getListPoint().size()) {
+                gui.addGraphicalElement(
+                        new Oval((int) (this.ArrayOfBalls.get(this.indexArrayOfBalls).getListPoint().get(indexArray).getX()), (int) (this.balls.getListPoint().get(indexArray).getY()),
+                                Color.decode("#FFFFFF"), Color.decode("#FFFFFF"), 20, 20));
+                indexArray++;
             }
             
-            // Traitement du rebond lorsqu'on se retrouve sur le cote bas gauche du simulateur
-            else if (this.balls.getListPoint().get(index).getX() <=0 && (this.balls.getListPoint().get(index).getY() >= this.getSizeSimY())) {
-                System.out.println("Test3.1");
-                if(this.balls.getListPoint().get(index).getX() == 0 ){
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
-                    System.out.println("Test3.11");
-                }
-                else if(this.balls.getListPoint().get(index).getY()==this.getSizeSimY()){
-                    this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                    System.out.println("Test3.12");
-                }
-                
-                else if(this.balls.getListPoint().get(index).getX() < 0 && (this.balls.getListPoint().get(index).getY() > this.getSizeSimY()))
-                this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                System.out.println("Test3.13");
-            }
-
-            //Traitement du rebond lorsqu'on est sur le cote haut du simulateur
-            else if (this.balls.getListPoint().get(index).getY() < 0 && this.balls.getListPoint().get(index).getX() < this.getSizeSimX() && this.balls.getListPoint().get(index).getX() > 0) {
-                this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                System.out.println("Test4");
-            } 
-            
-            // Traitement du rebond lorsqu'on se retrouve sur le cote haut gauche du simulateur
-            else if (this.balls.getListPoint().get(index).getY() <= 0 && (this.balls.getListPoint().get(index).getX() <= 0)) {
-                System.out.println("Test4.1");
-                if(this.balls.getListPoint().get(index).getX() == 0 ){
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
-                    System.out.println("Test4.11");
-                }
-                else if(this.balls.getListPoint().get(index).getY()==0){
-                    this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                    System.out.println("Test4.12");
-                }
-                
-                else if(this.balls.getListPoint().get(index).getX() < 0 && (this.balls.getListPoint().get(index).getY() < 0))
-                this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                System.out.println("Test4.13");
-            }
-            
-            else if(
-                    (this.balls.getListPoint().get(index).getX()==0 && this.balls.getListPoint().get(index).getY() ==0) ||
-                    (this.balls.getListPoint().get(index).getX()==0 && this.balls.getListPoint().get(index).getY() ==this.getSizeSimY()) ||
-                    (this.balls.getListPoint().get(index).getX()==this.getSizeSimX() && this.balls.getListPoint().get(index).getY() ==0) ||
-                    (this.balls.getListPoint().get(index).getX()==this.getSizeSimX() && this.balls.getListPoint().get(index).getY() ==this.getSizeSimY()) ){
-                this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                System.out.println("Test5");
-            }
-            
-            System.out.println("SpeedX de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffX(index));
-            System.out.println("SpeedY de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffY(index));
-            index++;
-            
-            
-            /*else if((this.balls.getListPoint().get(index).getX()) <= 0 && (this.balls.getListPoint().get(index).getY()<this.getSizeSimY() && this.balls.getListPoint().get(index).getY()>0)){
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                    System.out.println("Test5");
-                }
-            // Traitement hors simulation general 
-            else if ((this.balls.getListPoint().get(index).getX() >= this.getSizeSimX()) && (this.balls.getListPoint().get(index).getY() >= this.getSizeSimY()) 
-            || ((this.balls.getListPoint().get(index).getX() <= 0) && (this.balls.getListPoint().get(index).getY() >= this.getSizeSimY()))
-                    ||((this.balls.getListPoint().get(index).getY() >= this.getSizeSimY()) && (this.balls.getListPoint().get(index).getX() >= this.getSizeSimX()) )
-                    ||((this.balls.getListPoint().get(index).getY()) <= 0 && (this.balls.getListPoint().get(index).getX() <= 0))){
-                
-                if((this.balls.getListPoint().get(index).getX()) <= 0 && (this.balls.getListPoint().get(index).getY()<this.getSizeSimY() && this.balls.getListPoint().get(index).getY()>0)){
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                    System.out.println("Test6");
-                }
-                
-                else {
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                    System.out.println("Test7");
-                }
-            }
-                /*
-                this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index))
-                */
-            //Traitement du rebond lorsqu'on est sur le cote en bas a droite du simulateur 
-            //else if (this.balls.getListPoint().get(index).getX() >= this.getSizeSimX() && this.balls.getListPoint().get(index).getY() >= this.getSizeSimY()) {
-
-                /*Traitement si la vitesse etait trop rapide et vient du cote en dessous de la diagonale
-                if (maxPrevCoord > this.balls.getListPoint().get(index).getX() - this.getSpeedX()) {
-                    this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                } //Traitement si la balle vient de la diagonale
-                else if ((abs(this.getSpeedX()) + abs(this.getSpeedY())) % this.getSpeedX() == 0 && (abs(this.getSpeedX()) + abs(this.getSpeedY())) % this.getSpeedY() == 0) {
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                } //Traitement si la balle etait trop rapide et vient du cote au dessus de la diagonale
-                else if (maxPrevCoord > this.balls.getListPoint().get(index).getX() - this.getSpeedX()) {
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                } */
-                /*this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                System.out.println("SpeedX de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffX(index));
-                System.out.println("SpeedY de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffY(index));
-            } 
-            //Traitement du rebond lorsqu'on est sur le cote en bas a gauche du simulateur
-            else if (this.balls.getListPoint().get(index).getX() <= 0 && this.balls.getListPoint().get(index).getY() >= this.getSizeSimY()) {
-                this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                System.out.println("SpeedX de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffX(index));
-                System.out.println("SpeedY de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffY(index));
-            } 
-            //Traitement du rebond lorsqu'on est sur le cote en haut a droite du simulateur
-            else if (this.balls.getListPoint().get(index).getY() >= this.getSizeSimY() && this.balls.getListPoint().get(index).getX() >= this.getSizeSimX()) {
-                this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                System.out.println("SpeedX de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffX(index));
-                System.out.println("SpeedY de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffY(index));
-            } 
-            //Traitement du rebond lorsqu'on est sur le cote en haut a gauche du simulateur
-            else if (this.balls.getListPoint().get(index).getY() <= 0 && this.balls.getListPoint().get(index).getX() <= 0) {
-
-                /*Traitement si la vitesse etait trop rapide et vient du cote en dessous de la diagonale
-                if (maxPrevCoord > abs(this.balls.getListPoint().get(index).getX() - this.getSpeedX()) || (this.balls.getListPoint().get(index).getX() == 0 && this.balls.getListPoint().get(index).getX() != 0)) {
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), this.balls.getSpeedCoeffY(index));
-
-                } //Traitement si la balle vient de la diagonale
-                else if ((abs(this.getSpeedX()) + abs(this.getSpeedY())) % this.getSpeedX() == 0 && (abs(this.getSpeedX()) + abs(this.getSpeedY())) % this.getSpeedY() == 0) {
-                    this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                } //Traitement si la balle etait trop rapide et vient du cote au dessus de la diagonale
-                else if (maxPrevCoord > abs(this.balls.getListPoint().get(index).getY() - this.getSpeedY())) {
-
-                    this.balls.setSpeedCoeff(index, this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                } */
-               /* this.balls.setSpeedCoeff(index, -this.balls.getSpeedCoeffX(index), -this.balls.getSpeedCoeffY(index));
-                System.out.println("SpeedX de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffX(index));
-                System.out.println("SpeedY de " + this.balls.getListPoint().get(index) + " est " + this.balls.getSpeedCoeffY(index));
-            */
-            
+            this.indexArrayOfBalls++;
         }
-    }
 
+    }
 }

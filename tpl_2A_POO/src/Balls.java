@@ -21,6 +21,7 @@ public class Balls extends Point{
     private ArrayList<Integer> speedCoeffX;
     private ArrayList<Integer> speedCoeffY;
     
+    
     public Balls(){
         super();
         int index = 0;
@@ -30,10 +31,10 @@ public class Balls extends Point{
         this.addBall(new Point(200,110));
         this.addBall(new Point(80,120));
         this.addBall(new Point(10,80));
-        this.addBall(new Point(30,50));
+        /*this.addBall(new Point(30,50));
         this.addBall(new Point(400,120));
         this.addBall(new Point(10,330)); 
-        this.addBall(new Point(215,50));
+        this.addBall(new Point(215,50));*/
         this.speedCoeffX = new ArrayList<>();
         this.speedCoeffY = new ArrayList<>();
         while (this.getSizeList() != index) {
