@@ -19,8 +19,8 @@ int tailleCorpsHauteur;
 Color couleurTete;
 Color couleurCorps;
 
-    public Poisson(int x, int y, int Vx, int Vy, int tailleHauteur, int tailleLongueur) {
-        super( x, y, Vx, Vy,  tailleHauteur,  tailleLongueur);
+    public Poisson(int x, int y, int Vx, int Vy, int rayonAction, int rayonSecurite, int tailleHauteur, int tailleLongueur) {
+        super( x, y, Vx, Vy, rayonAction,rayonSecurite, tailleHauteur,  tailleLongueur);
         this.setEtat(1); //un poisson sera dans l'état 1
         this.tailleCorpsLongueur = 50;
         this.tailleTete = 10;
