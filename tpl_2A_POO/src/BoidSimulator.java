@@ -208,7 +208,7 @@ public class BoidSimulator implements Simulable {
         
         for (int ici = 0; ici < (2*NbBoids); ici++){
             for (int icj = 0; icj < NbBoids; icj++){
-                ajoute (l*ici/(2*NbBoids),h*icj/NbBoids,-4,-4);
+                ajoute (l*ici/(2*NbBoids),h*icj/NbBoids,0,0);
             }
         }
         
