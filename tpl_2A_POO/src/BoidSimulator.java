@@ -160,7 +160,6 @@ public class BoidSimulator implements Simulable {
         
         delBoid (b);    //On supprime cet élément de la table de hachage
         b.moveBoid(voisinsPotentiels(b));   //On calcule sa nouvelle position
-        System.out.println(voisinsPotentiels(b));
         addBoid (b);    //On le met dans sa nouvelle position dans la table de hachage
         
         b.afficheBoid (gui);    //On l'affiche
@@ -178,8 +177,8 @@ public class BoidSimulator implements Simulable {
         }
     }
     
-    private void ajoute (int x, int y){
-        Boids b = new Boids (x,y,0,0,rayon,longueur,hauteur);
+    private void ajoute (int x, int y, int vx,int vy){
+        Boids b = new Boids (x,y,vx,vy,rayon,rayonDanger,longueur,hauteur);
         addBoid (b);
     }
     
@@ -199,18 +198,17 @@ public class BoidSimulator implements Simulable {
     
             
         //ajoute (l*9/10,h*9/10);
-        ajoute (200,225);
+        ajoute (200,225,1,1);
         //ajoute (500,200);
         //ajoute (250,25);
-        ajoute (200,250);
+        //ajoute (200,250);
         
         
-        /*for (int ici = 0; ici < NbBoids; ici++){
-            System.out.println (ici);
-            System.out.println (l*ici/50);
-            System.out.println (h*ici/50);
-            ajoute (l*ici/NbBoids,h*ici/NbBoids);
-        }*/
+        for (int ici = 0; ici < (2*NbBoids); ici++){
+            for (int icj = 0; icj < NbBoids; icj++){
+                ajoute (l*ici/(2*NbBoids),h*icj/NbBoids,0,0);
+            }
+        }
         
         System.out.println ("fin des ajouts");
         
