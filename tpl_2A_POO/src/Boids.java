@@ -30,10 +30,10 @@ public class Boids extends Cellule {
    
       //ce constructeur crée un Boids sans angle, avec un rayonAction de 100, un rayonSecurite de 10 une vitesse (Vx,Vy)
       //une position (x,y), sans voisins, avec une taille de fenetre gui de tailleHauteur et tailleLargeur
-      public Boids(int x, int y, int Vx, int Vy, int tailleHauteur, int tailleLongueur) {
+      public Boids(int x, int y, int Vx, int Vy, int r, int tailleHauteur, int tailleLongueur) {
         this.angle = 0;
         this.setEtat(0); //par défaut un boid est à l'état 0 
-        this.rayonAction = 1000;
+        this.rayonAction = r;
          this.rayonSecurite = 10;
         this.vitesse = new Point();
         this.setLocalisation(x, y);
@@ -195,14 +195,32 @@ public class Boids extends Cellule {
     public String toString() {
         return "le boid se trouve à la position : " + this.getlocalisation().toString() + " et sa vitesse est : " + this.vitesse.toString();
     }
-
+    //calcul x modulo y
+        public int mod ( int x , int y ){
+        return (x+y)%y ;
+    }
+    
+        //access renvoie un point dont les coordonnées sont modulées
+    private Point access (Point v){ //v doit être un couple (x,y)
+        Point p = new Point();
+        p.x = mod (v.x,this.tailleFenetreHauteur);
+        p.y = mod (v.y,this.tailleFenetreLongueur);
+        return p;
+    }
+    
+    
+    
 public void afficheBoid(GUISimulator gui){
+    //positionCyclique est la position cyclique du point en fonction de la fenêtre.
+    //Cela permet de l'afficher meme si ses coordonnées sont en dehors de la fenêtre.
+    Point positionCyclique = new Point();
     //on affiche l'élément que si on est dans la fenêtre de gui
-    if(this.getlocalisation().getX()<this.tailleFenetreLongueur && this.getlocalisation().getX()>0 
-            && this.getlocalisation().getY()<this.tailleFenetreHauteur && this.getlocalisation().getY()>0)
+    //if(this.getlocalisation().getX()<this.tailleFenetreLongueur && this.getlocalisation().getX()>0 
+          //  && this.getlocalisation().getY()<this.tailleFenetreHauteur && this.getlocalisation().getY()>0)
+        positionCyclique = access(this.getlocalisation());
     gui.addGraphicalElement(new Rectangle(
-            (int)this.getlocalisation().getX(),
-            (int)this.getlocalisation().getY(), 
+            (int)positionCyclique.getX(),
+            (int)positionCyclique.getY(), 
             Color.GREEN, 
             Color.WHITE, 
             5 , 5));
