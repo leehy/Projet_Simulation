@@ -112,11 +112,10 @@ public class Boids extends Cellule {
         Point centreMasse = new Point();
         int taille = this.voisins.size();
         while (index != taille) {
-            centreMasse.setLocation(centreMasse.getX() + this.voisins.get(index).getlocalisation().getX(),
-                    centreMasse.getY() + this.voisins.get(index).getlocalisation().getY());
+            centreMasse.setLocation(centreMasse.getX() + this.voisins.get(index).getlocalisation().getX()/taille,
+                    centreMasse.getY() + this.voisins.get(index).getlocalisation().getY()/taille);
             index++;
         }
-        centreMasse.setLocation(centreMasse.getX() / taille, centreMasse.getY() / taille);
         return centreMasse;
     }
 
@@ -146,8 +145,7 @@ public class Boids extends Cellule {
         double y = 0;
         int taille = this.voisins.size();
         while (index != taille) {
-            if (this.distanceCarre(this.voisins.get(index).getlocalisation()) < this.rayonSecurite
-                    || this.distanceCarre(this.voisins.get(index).getlocalisation()) > -this.rayonSecurite) {
+            if (this.distanceCarre(this.voisins.get(index).getlocalisation()) < this.rayonSecurite*this.rayonSecurite) {
                 x = this.getlocalisation().getX() - this.voisins.get(index).getlocalisation().getX();
                 y = this.getlocalisation().getY() - this.voisins.get(index).getlocalisation().getY();
                 deplacement.setLocation(deplacement.getX() - x, deplacement.getY() - y);
@@ -189,6 +187,7 @@ public class Boids extends Cellule {
                 this.vitesse.getY() + this.regle1().getY() + this.regle2().getY() + this.regle3().getY());
         this.setLocalisation(this.getlocalisation().getX() + this.vitesse.getX(),
                 this.getlocalisation().getY() + this.vitesse.getY());
+        this.voisins.clear(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
 
     }
     
