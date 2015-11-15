@@ -109,6 +109,30 @@ public class BoidSimulator implements Simulable {
         return gui;
     }
     
+    //copiePile renvoie une copie de la pile mise en argument
+    public Stack<Boids> copiePile(Stack<Boids> pileInitiale) {
+        Stack<Boids> nouvellePile = new Stack();
+        Stack<Boids> pileProvisoire = new Stack();
+        int taille = pileInitiale.size();
+        int index = 0;
+        Boids b;
+        //on copie dans la pile que l'on va renvoyer
+        while(index != taille) {
+            b = pileInitiale.pop();
+            nouvellePile.push(b);
+            pileProvisoire.push(b);
+            index ++;
+        }
+        //on remet dans la pile initiale les élément de la pile
+        index = 0;
+        while(index != taille) {
+            b = pileProvisoire.pop();
+            pileInitiale.push(b);
+            index ++;
+        }
+    return nouvellePile;
+    }
+    
     private void auxAffiche (Stack<Boids> hach){
         try {
         Boids b = hach.pop ();
@@ -146,7 +170,7 @@ public class BoidSimulator implements Simulable {
     private void afficheNext (){
         for (int i = 0; i < hauteur/rayon; i++) {
             for (int j = 0; j < longueur/rayon; j++) {
-                auxAfficheNext (hachage[i][j], hachage[i][j].copie ()); 
+                auxAfficheNext (hachage[i][j], copiePile (hachage[i][j])); 
             }
         }
     }

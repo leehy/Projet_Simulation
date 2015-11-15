@@ -224,29 +224,7 @@ public void afficheBoid(GUISimulator gui){
     
 }
 
-//copiePile renvoie une copie de la pile mise en argument
-public Stack<Boids> copiePile(Stack<Boids> pileInitiale) {
-    Stack<Boids> nouvellePile = new Stack();
-    Stack<Boids> pileProvisoire = new Stack();
-    int taille = pileInitiale.size();
-    int index = 0;
-    Boids b;
-    //on copie dans la pile que l'on va renvoyer
-    while(index != taille) {
-        b = pileInitiale.pop();
-        nouvellePile.push(b);
-        pileProvisoire.push(b);
-        index ++;
-    }
-    //on remet dans la pile initiale les élément de la pile
-    index = 0;
-     while(index != taille) {
-        b = pileProvisoire.pop();
-        pileInitiale.push(b);
-        index ++;
-     }
-     return nouvellePile;
-}
+
 }
 
         
