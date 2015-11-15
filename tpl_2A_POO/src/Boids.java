@@ -137,7 +137,7 @@ public class Boids extends Cellule {
             deplacement.setLocation(this.centreDeMasse().getX() - this.getlocalisation().getX(),
                     this.centreDeMasse().getY() - this.getlocalisation().getY());
         }
-        deplacement.setLocation((deplacement.getX()/10 ), (deplacement.getY()/10 ));
+        deplacement.setLocation((deplacement.getX()/5 ), (deplacement.getY()/5 ));
         return deplacement;
     }
 
