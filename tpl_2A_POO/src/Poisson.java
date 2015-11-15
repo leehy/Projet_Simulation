@@ -56,8 +56,8 @@ Point deplacement = new Point();
 while(index != this.voisins.size()) {
     
 if(this.voisins.get(index).getEtat() == 2) {
-    deplacement.setLocation(deplacement.getX() + this.voisins.get(index).getlocalisation().getX(),
-            deplacement.getY()+ this.voisins.get(index).getlocalisation().getY());
+    deplacement.setLocation(deplacement.getX() + this.voisins.get(index).getlocalisation().getX()/20,
+            deplacement.getY()+ this.voisins.get(index).getlocalisation().getY()/20);
 }
 index ++;
 }
