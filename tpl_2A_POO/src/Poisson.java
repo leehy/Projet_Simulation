@@ -46,23 +46,29 @@ Color couleurCorps;
     
 
 @Override
-//on override la regle1 de sorte a ce que si le poisson a dans ses voisins une lumiere
+//on override le centre de masse de sorte a ce que si le poisson a dans ses voisins une lumiere
 //il sera vraiment très attiré par la lumière, beaucoup plus que par ses amis poissons 
 //(il est attiré par les poisssons de l'ordre de 1% et par la lumière de l'ordre de 100%)
-public Point regle1() {
-    super.regle1();
-int index = 0;
-Point deplacement = new Point();
-while(index != this.voisins.size()) {
-    
-if(this.voisins.get(index).getEtat() == 2) {
-    deplacement.setLocation(deplacement.getX() + this.voisins.get(index).getlocalisation().getX()/20,
-            deplacement.getY()+ this.voisins.get(index).getlocalisation().getY()/20);
+public Point centreDeMasse() {
+        int index = 0;
+        Point centreMasse = new Point();
+        int taille = this.voisins.size();
+        while (index != taille) {
+            //si c'est un poisson le poids reste le meme
+            if(this.voisins.get(index).getEtat() == 1)
+            {
+            centreMasse.setLocation(centreMasse.getX() + this.voisins.get(index).getlocalisation().getX() / taille,
+                    centreMasse.getY() + this.voisins.get(index).getlocalisation().getY() / taille);
+            }
+            //si c'est une lumiere le poids est bien plus important (2*nombreDeVoisins fois plus important)
+            else if(this.voisins.get(index).getEtat() == 2)
+            {
+             centreMasse.setLocation(centreMasse.getX() + this.voisins.get(index).getlocalisation().getX() ,
+                    centreMasse.getY() + this.voisins.get(index).getlocalisation().getY() );
+            }
+            index++;
+        }
+        return centreMasse;
+    }
 }
-index ++;
-}
-    return deplacement;
-}
-}
-
 
