@@ -22,9 +22,9 @@ Color couleurCorps;
     public Poisson(int x, int y, int Vx, int Vy, int rayonAction, int rayonSecurite, int tailleHauteur, int tailleLongueur) {
         super( x, y, Vx, Vy, rayonAction,rayonSecurite, tailleHauteur,  tailleLongueur);
         this.setEtat(1); //un poisson sera dans l'état 1
-        this.tailleCorpsLongueur = 50;
+        this.tailleCorpsLongueur = 30;
         this.tailleTete = 10;
-        this.tailleCorpsHauteur = 20;
+        this.tailleCorpsHauteur = 10;
         this.couleurTete = Color.pink;
         this.couleurCorps = Color.cyan;
     }
