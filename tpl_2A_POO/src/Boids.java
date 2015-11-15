@@ -144,14 +144,13 @@ public class Boids extends Cellule {
         double x = 0;
         double y = 0;
         int taille = this.voisins.size();
-        while (index != taille) {
+        while (index < taille) {
             if (this.distanceCarre(this.voisins.get(index).getlocalisation()) < this.rayonSecurite*this.rayonSecurite) {
                 x = this.getlocalisation().getX() - this.voisins.get(index).getlocalisation().getX();
                 y = this.getlocalisation().getY() - this.voisins.get(index).getlocalisation().getY();
                 deplacement.setLocation(deplacement.getX() - x, deplacement.getY() - y);
-                index++;
-
             }
+            index++;
         }
         return deplacement;
     }

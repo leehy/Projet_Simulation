@@ -83,7 +83,6 @@ public class BoidSimulator implements Simulable {
         try{
             Boids b = s1.pop();
             s2.push(b);
-            System.out.println (b.toString());
             concatene (s1,s2);
             s1.push(b);
         }
@@ -103,7 +102,6 @@ public class BoidSimulator implements Simulable {
                 concatene(hachage [acc.x][acc.y],pile);
             }
         }
-        
         return pile; 
     }
     
@@ -169,15 +167,15 @@ public class BoidSimulator implements Simulable {
             }
         }
     
-        //for (int ici = 0; ici <= 20; ici++){
-        //    System.out.println (ici);
-        //    ajoute (l*ici/20,h*ici/20);
-        //}
+        for (int ici = 0; ici <= 50; ici++){
+            System.out.println (ici);
+            ajoute (l*ici/50,h*ici/50);
+        }
             
         //ajoute (l,h);
         ajoute (200,500);
         ajoute (500,200);
-        //ajoute (250,25);
+        ajoute (250,25);
         //ajoute (250,250);
         affiche ();
     }
