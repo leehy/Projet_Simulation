@@ -28,14 +28,14 @@ public class Boids extends Cellule {
     private Stack<Boids> voisins;
     private int tailleFenetreHauteur;
     private int tailleFenetreLongueur;
-   
+
       //ce constructeur crée un Boids sans angle, avec un rayonAction de 100, un rayonSecurite de 10 une vitesse (Vx,Vy)
-      //une position (x,y), sans voisins, avec une taille de fenetre gui de tailleHauteur et tailleLargeur
-      public Boids(int x, int y, int Vx, int Vy, int r, int tailleLongueur, int tailleHauteur) {
+    //une position (x,y), sans voisins, avec une taille de fenetre gui de tailleHauteur et tailleLargeur
+    public Boids(int x, int y, int Vx, int Vy, int r, int tailleLongueur, int tailleHauteur) {
         this.angle = 0;
         this.setEtat(0); //par défaut un boid est à l'état 0 
         this.rayonAction = r;
-         this.rayonSecurite = 10;
+        this.rayonSecurite = 10;
         this.vitesse = new Point();
         this.setLocalisation(x, y);
         this.vitesse.setLocation(Vx, Vy);
@@ -43,65 +43,66 @@ public class Boids extends Cellule {
         this.tailleFenetreHauteur = tailleHauteur;
         this.tailleFenetreLongueur = tailleLongueur;
     }
-      
-      
+
     public double getAngle() {
         return this.angle;
     }
-    
+
     public Point getVitesse() {
         return this.vitesse;
     }
-    
+
     public Stack<Boids> getVoisins() {
         return this.voisins;
     }
-    
-   //getRayonSecurite renvoie le rayonSecurite 
+
+    //getRayonSecurite renvoie le rayonSecurite 
     public int getRayonSecurite() {
         return this.rayonSecurite;
     }
-    
+
     //EstEgal permet de savoir si le boid concerné est égal à un autre Boid
     public boolean estEgal(Boids b) {
-        if(this.rayonAction == b.getRayonAction() && this.rayonSecurite == b.getRayonSecurite() && this.angle == b.getAngle() && this.vitesse == b.getVitesse() && this.voisins == b.getVoisins() && this.getlocalisation() == b.getlocalisation())
-        return true;
-        else return false;
+        if (this.rayonAction == b.getRayonAction() && this.rayonSecurite == b.getRayonSecurite() && this.angle == b.getAngle() && this.vitesse == b.getVitesse() && this.voisins == b.getVoisins() && this.getlocalisation() == b.getlocalisation()) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    
-    
+
 //estVraimentVoisin permet de savoir si le boid donné en argument est vraiment un voisin du boid concerné
     public boolean estVraimentVoisin(Boids b) {
-        if (this.rayonAction*this.rayonAction > distanceCarre(b.getlocalisation())) 
+        if (this.rayonAction * this.rayonAction > distanceCarre(b.getlocalisation())) {
             return true;
-        else return false;
+        } else {
+            return false;
+        }
     }
-    
+
     //setVoisins récupère une pile de voisins potentiels et rempli la pile des voisins
     public void setVoisins(Stack<Boids> PileVoisinsPotentiels) {
         try {
             Boids b = PileVoisinsPotentiels.pop();
             //on vérifie si l'élément de la pile est vraiment un voisin de notre boid
-           if( this.estVraimentVoisin(b))
-               //si oui on l'ajoute dans la liste des voisins
-               this.voisins.push(b);
-           setVoisins(PileVoisinsPotentiels);
+            if (this.estVraimentVoisin(b)) //si oui on l'ajoute dans la liste des voisins
+            {
+                this.voisins.push(b);
+            }
+            setVoisins(PileVoisinsPotentiels);
+        } catch (EmptyStackException e) {
         }
-        catch(EmptyStackException e) {}
-            
-    } 
-    
-    
+
+    }
+
     //setAngle permet de regler l'angle avec la verticale du boid. Elle renvoie un angle compris entre -Pi/2 et Pi/2
     public void setAngle(int valeur) {
-        this.angle = atan(vitesse.getX()/vitesse.getY());
+        this.angle = atan(vitesse.getX() / vitesse.getY());
     }
 
     //addVoisin permet d'ajouter un voisin à la liste de voisins
     public void addVoisin(Boids b) {
         this.voisins.add(b);
     }
-
 
     public int getRayonAction() {
         return this.rayonAction;
@@ -113,8 +114,8 @@ public class Boids extends Cellule {
         Point centreMasse = new Point();
         int taille = this.voisins.size();
         while (index != taille) {
-            centreMasse.setLocation(centreMasse.getX() + this.voisins.get(index).getlocalisation().getX()/taille,
-                    centreMasse.getY() + this.voisins.get(index).getlocalisation().getY()/taille);
+            centreMasse.setLocation(centreMasse.getX() + this.voisins.get(index).getlocalisation().getX() / taille,
+                    centreMasse.getY() + this.voisins.get(index).getlocalisation().getY() / taille);
             index++;
         }
         return centreMasse;
@@ -125,8 +126,10 @@ public class Boids extends Cellule {
     //Déplacement à hauteur de 1% de la distance du boids avec le centre de masse des voisins.
     public Point regle1() {
         Point deplacement = new Point();
-        deplacement.setLocation(this.centreDeMasse().getX() - this.getlocalisation().getX(),
-                this.centreDeMasse().getY() - this.getlocalisation().getY());
+        if (this.voisins.size() != 0) {
+            deplacement.setLocation(this.centreDeMasse().getX() - this.getlocalisation().getX(),
+                    this.centreDeMasse().getY() - this.getlocalisation().getY());
+        }
         deplacement.setLocation(deplacement.getX() / 100, deplacement.getY() / 100);
         return deplacement;
     }
@@ -146,8 +149,7 @@ public class Boids extends Cellule {
         double y = 0;
         int taille = this.voisins.size();
         while (index < taille) {
-            if (this.distanceCarre(this.voisins.get(index).getlocalisation()) < this.rayonSecurite*this.rayonSecurite) 
-            //si on est trop près du boid voisin
+            if (this.distanceCarre(this.voisins.get(index).getlocalisation()) < this.rayonSecurite * this.rayonSecurite) //si on est trop près du boid voisin
             {
                 x = this.getlocalisation().getX() - this.voisins.get(index).getlocalisation().getX();
                 y = this.getlocalisation().getY() - this.voisins.get(index).getlocalisation().getY();
@@ -165,7 +167,7 @@ public class Boids extends Cellule {
         Point vitesse = new Point();
         int taille = this.voisins.size();
         while (index != taille) {
-            vitesse.setLocation(vitesse.getX() + this.voisins.get(index).vitesse.getX(), 
+            vitesse.setLocation(vitesse.getX() + this.voisins.get(index).vitesse.getX(),
                     vitesse.getY() + this.voisins.get(index).vitesse.getY());
             index++;
         }
@@ -194,43 +196,39 @@ public class Boids extends Cellule {
         this.voisins.clear(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
 
     }
-    
+
     @Override
     public String toString() {
         return "le boid se trouve à la position : " + this.getlocalisation().toString() + " et sa vitesse est : " + this.vitesse.toString();
     }
+
     //calcul x modulo y
-        public int mod ( int x , int y ){
-        return (x+y)%y ;
+
+    public int mod(int x, int y) {
+        return (x + y) % y;
     }
-    
-        //access renvoie un point dont les coordonnées sont modulées
-    private Point access (Point v){ //v doit être un couple (x,y)
+
+    //access renvoie un point dont les coordonnées sont modulées
+    private Point access(Point v) { //v doit être un couple (x,y)
         Point p = new Point();
-        p.x = mod (v.x,this.tailleFenetreHauteur);
-        p.y = mod (v.y,this.tailleFenetreLongueur);
+        p.x = mod(v.x, this.tailleFenetreHauteur);
+        p.y = mod(v.y, this.tailleFenetreLongueur);
         return p;
     }
-    
-    
-    
-public void afficheBoid(GUISimulator gui){
-  
-    //on affiche l'élément que si on est dans la fenêtre de gui
-    if(this.getlocalisation().getX()<this.tailleFenetreLongueur && this.getlocalisation().getX()>0 
-          && this.getlocalisation().getY()<this.tailleFenetreHauteur && this.getlocalisation().getY()>0)
-    gui.addGraphicalElement(new Rectangle(
-            (int)this.getlocalisation().getX(),
-            (int)this.getlocalisation().getY(), 
-            Color.GREEN, 
-            Color.WHITE, 
-            5 , 5));
-    
-}
 
+    public void afficheBoid(GUISimulator gui) {
+
+        //on affiche l'élément que si on est dans la fenêtre de gui
+        if (this.getlocalisation().getX() < this.tailleFenetreLongueur && this.getlocalisation().getX() > 0
+                && this.getlocalisation().getY() < this.tailleFenetreHauteur && this.getlocalisation().getY() > 0) {
+            gui.addGraphicalElement(new Rectangle(
+                    (int) this.getlocalisation().getX(),
+                    (int) this.getlocalisation().getY(),
+                    Color.GREEN,
+                    Color.WHITE,
+                    5, 5));
+        }
+
+    }
 
 }
-
-        
-        
-       
