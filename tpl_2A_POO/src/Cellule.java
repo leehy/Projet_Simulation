@@ -9,7 +9,8 @@ import java.awt.Point;
 import java.util.Random;
 
 /**
- *
+ *Cellule est une classe qui a comme attributs un Point qui représente la position de la
+ * cellule et un etat qui represente l'etat de la cellule (un entier)
  * @author sacha
  */
 public class Cellule {
