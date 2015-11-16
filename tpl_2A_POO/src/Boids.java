@@ -12,6 +12,7 @@ import java.awt.Point;
 import static java.lang.Math.abs;
 import java.util.Vector;
 import static java.lang.Math.atan;
+import static java.lang.Math.sqrt;
 
 /**
  *
@@ -90,7 +91,7 @@ public class Boids extends Cellule {
         return this.vitesseProvisoire.getX() * this.vitesseProvisoire.getX() + this.vitesseProvisoire.getY() * this.vitesseProvisoire.getY();
     }
 
-    //estSuperieurVitesseMax dit si la vitesse du boid est supérieur à sa vitesse maximale autorisée
+    //estSuperieurVitesseMax dit vrai si la vitesse du boid est supérieur à sa vitesse maximale autorisée
     private boolean estSuperieurVitesseMax() {
         return this.calculVitesseCarre() > this.vitesseMaximale * this.vitesseMaximale;
 
@@ -115,7 +116,7 @@ public class Boids extends Cellule {
     }
 
     //setAngle permet de regler l'angle avec la verticale du boid. Elle renvoie un angle compris entre -Pi/2 et Pi/2
-    public void setAngle(int valeur) {
+    public void setAngle() {
         this.angle = atan(vitesse.getX() / vitesse.getY());
     }
 
@@ -220,9 +221,11 @@ public class Boids extends Cellule {
                 this.vitesse.getY() + this.regle1().getY() + this.regle2().getY() + this.regle3().getY());
         this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
                 this.getlocalisation().getY() + this.vitesse.getY());
+        
         //si on sort de la fenêtre (selon les X) on repart dans l'autre sens ie création du rebond
         if (this.localisationProvisoire.getX() > this.tailleFenetreLongueur
-                || this.localisationProvisoire.getX() < 0) {
+                || this.localisationProvisoire.getX() < 0)
+        {
             this.vitesseProvisoire.setLocation(-this.vitesseProvisoire.getX(),
                     this.vitesseProvisoire.getY());
             this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
@@ -231,7 +234,8 @@ public class Boids extends Cellule {
         }
         //de meme rebond selon les Y
         if (this.localisationProvisoire.getY() > this.tailleFenetreLongueur
-                || this.localisationProvisoire.getY() < 0) {
+                || this.localisationProvisoire.getY() < 0)
+        {
             this.vitesseProvisoire.setLocation(this.vitesseProvisoire.getX(),
                     -this.vitesseProvisoire.getY());
             this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
@@ -239,9 +243,15 @@ public class Boids extends Cellule {
 
         }
         //si on est devenu supérieur à la vitesse maximale autorisée on reste à la vitesse précédente
-        if(this.estSuperieurVitesseMax()) {
-            this.vitesseProvisoire = this.vitesse;
+        if(this.estSuperieurVitesseMax()) 
+        {
+            //les nouvelles vitesses selon x et y sont modulés en fonction de la vitesse obtenue selon x et y
+            double nouvelleVitesseX = sqrt(this.vitesseProvisoire.getX()*this.vitesseProvisoire.getX()*this.vitesseMaximale*this.vitesseMaximale/this.calculVitesseCarre());
+                       double nouvelleVitesseY = sqrt(this.vitesseProvisoire.getY()*this.vitesseProvisoire.getY()*this.vitesseMaximale*this.vitesseMaximale/this.calculVitesseCarre());
+ 
+         this.vitesseProvisoire.setLocation(nouvelleVitesseX, nouvelleVitesseY);
         }
+        
     }
 
 //moveBoid permet debouger le boid.
@@ -249,6 +259,7 @@ public class Boids extends Cellule {
         this.vitesse = this.vitesseProvisoire;
         this.setLocalisation(this.localisationProvisoire.getX(),
                 this.localisationProvisoire.getY());
+        this.setAngle();
         this.voisins.clear(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
 
     }
