@@ -12,6 +12,7 @@ import java.awt.Point;
 import static java.lang.Math.abs;
 import java.util.Vector;
 import static java.lang.Math.atan;
+import static java.lang.Math.sqrt;
 
 /**
  *
@@ -19,19 +20,22 @@ import static java.lang.Math.atan;
  */
 public class Boids extends Cellule {
 
-    private double angle;
+    protected double angle;
     private Point vitesse;
+    private Point vitesseProvisoire;
+    private Point localisationProvisoire;
     //rayonAction est le rayon au delà duquel les autres boids ne sont plus concernés comme des voisins
     private int rayonAction;
     //rayonSécurité est le rayon en-decà duquel les autres boids sont concernés comme trop proche, il faut donc changer de direction
     private int rayonSecurite;
+    private int vitesseMaximale;
     protected Stack<Boids> voisins;
     private int tailleFenetreHauteur;
     private int tailleFenetreLongueur;
 
-      //ce constructeur crée un Boids sans angle, avec un rayonAction de 100, un rayonSecurite de 10 une vitesse (Vx,Vy)
+    //ce constructeur crée un Boids sans angle, avec un rayonAction de 100, un rayonSecurite de 10 une vitesse (Vx,Vy)
     //une position (x,y), sans voisins, avec une taille de fenetre gui de tailleHauteur et tailleLargeur
-    public Boids(int x, int y, int Vx, int Vy, int r, int rSecurite, int tailleLongueur, int tailleHauteur) {
+    public Boids(int x, int y, int Vx, int Vy, int r, int rSecurite, int vitesseMax, int tailleLongueur, int tailleHauteur) {
         this.angle = 0;
         this.setEtat(0); //par défaut un boid est à l'état 0 
         this.rayonAction = r;
@@ -40,6 +44,9 @@ public class Boids extends Cellule {
         this.setLocalisation(x, y);
         this.vitesse.setLocation(Vx, Vy);
         this.voisins = new Stack();
+        this.vitesseProvisoire = new Point();
+        this.localisationProvisoire = new Point();
+        this.vitesseMaximale = vitesseMax;
         this.tailleFenetreHauteur = tailleHauteur;
         this.tailleFenetreLongueur = tailleLongueur;
     }
@@ -79,12 +86,21 @@ public class Boids extends Cellule {
         }
     }
 
+    //calculVitesseCarre renvoie la vitesse au carré
+    private double calculVitesseCarre() {
+        return this.vitesseProvisoire.getX() * this.vitesseProvisoire.getX() + this.vitesseProvisoire.getY() * this.vitesseProvisoire.getY();
+    }
+
+    //estSuperieurVitesseMax dit vrai si la vitesse du boid est supérieur à sa vitesse maximale autorisée
+    private boolean estSuperieurVitesseMax() {
+        return this.calculVitesseCarre() > this.vitesseMaximale * this.vitesseMaximale;
+
+    }
+
     //setVoisins récupère une pile de voisins potentiels et rempli la pile des voisins
     public void setVoisins(Stack<Boids> PileVoisinsPotentiels) {
 
         try {
-                        
-                      
 
             Boids b = PileVoisinsPotentiels.pop();
             //on vérifie si l'élément de la pile est vraiment un voisin de notre boid
@@ -100,7 +116,7 @@ public class Boids extends Cellule {
     }
 
     //setAngle permet de regler l'angle avec la verticale du boid. Elle renvoie un angle compris entre -Pi/2 et Pi/2
-    public void setAngle(int valeur) {
+    public void setAngle() {
         this.angle = atan(vitesse.getX() / vitesse.getY());
     }
 
@@ -137,7 +153,7 @@ public class Boids extends Cellule {
             deplacement.setLocation(this.centreDeMasse().getX() - this.getlocalisation().getX(),
                     this.centreDeMasse().getY() - this.getlocalisation().getY());
         }
-        deplacement.setLocation((deplacement.getX()/100 ), (deplacement.getY()/100 ));
+        deplacement.setLocation((deplacement.getX() / 100), (deplacement.getY() / 100));
         return deplacement;
     }
 
@@ -162,7 +178,7 @@ public class Boids extends Cellule {
                 y = this.getlocalisation().getY() - this.voisins.get(index).getlocalisation().getY();
                 //ainsi le vecteur de deplacement sera pour chaque boid dans le sens opposé de l'autre boid
                 deplacement.setLocation(deplacement.getX() + x, deplacement.getY() + y);
-            }
+               }
             index++;
         }
         return deplacement;
@@ -182,29 +198,72 @@ public class Boids extends Cellule {
         return vitesse;
     }
 
-    // la regle 3 est qu'un boid va se rapprocher de la vitesse moyenne de ses voisins.
+    //la regle 3 est qu'un boid va se rapprocher de la vitesse moyenne de ses voisins.
     //regle3 renvoie un point qui contient les valeurs de la nouvelle vitesse du boid du à cette règle
     public Point regle3() {
         Point deplacement = new Point();
         //la regle 3 ne s'applique pas si il n'y a pas de voisins
-        if(this.voisins.size() != 0)   {  
-        deplacement.setLocation(this.vitesseMoyenne().getX() - this.vitesse.getX(),
-                this.vitesseMoyenne().getY() - this.vitesse.getY());
-        deplacement.setLocation(deplacement.getX()/8, deplacement.getY()/8);
+        if (this.voisins.size() != 0) {
+            deplacement.setLocation(this.vitesseMoyenne().getX() - this.vitesse.getX(),
+                    this.vitesseMoyenne().getY() - this.vitesse.getY());
+            deplacement.setLocation(deplacement.getX() / 8, deplacement.getY() / 8);
         }
         return deplacement;
-       
+
     }
 
-//moveBoid permet de mettre le boid dans l'état suivant en terme de position et de vitesse suivant les différentes règles définies.
-//il faut lui envoyer une liste de voisins potentiels afin qu'il calcule les véritables voisins et ainsi que les règles puissent être appliqués    
-    public void moveBoid(Stack<Boids> PileVoisinsPotentiels) {
+    //calculBoid permet de calculer la prochaine position et la prochaine vitesse du boid
+    //sans changer ces valeurs mais en les stockant de manière provisoire
+    //il faut lui envoyer une liste de voisins potentiels afin qu'il calcule les véritables voisins et ainsi que les règles puissent être appliqués    
+    public void calculBoid(Stack<Boids> PileVoisinsPotentiels) {
         this.setVoisins(PileVoisinsPotentiels);
-        this.vitesse.setLocation(this.vitesse.getX() + this.regle1().getX()  + this.regle2().getX() + this.regle3().getX(),
-                this.vitesse.getY() + this.regle1().getY() + this.regle2().getY()+ this.regle3().getY());
-        this.setLocalisation(this.getlocalisation().getX() + this.vitesse.getX(),
+        Point un = regle1();
+        Point deux = regle2();
+        Point trois = regle3();
+        this.vitesseProvisoire.setLocation(this.vitesse.getX() + un.getX() + deux.getX() + trois.getX(),
+                this.vitesse.getY() + un.getY() + deux.getY() + trois.getY());
+        this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
                 this.getlocalisation().getY() + this.vitesse.getY());
-        this.voisins.clear(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
+        
+        //si on sort de la fenêtre (selon les X) on repart dans l'autre sens ie création du rebond
+        if (this.localisationProvisoire.getX() > this.tailleFenetreLongueur
+                || this.localisationProvisoire.getX() < 0)
+        {
+            this.vitesseProvisoire.setLocation(-this.vitesseProvisoire.getX(),
+                    this.vitesseProvisoire.getY());
+            this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
+                    this.getlocalisation().getY() + this.vitesse.getY());
+
+        }
+        //de meme rebond selon les Y
+        if (this.localisationProvisoire.getY() > this.tailleFenetreLongueur
+                || this.localisationProvisoire.getY() < 0)
+        {
+            this.vitesseProvisoire.setLocation(this.vitesseProvisoire.getX(),
+                    -this.vitesseProvisoire.getY());
+            this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
+                    this.getlocalisation().getY() + this.vitesse.getY());
+
+        }
+        //si on est devenu supérieur à la vitesse maximale autorisée on reste à la vitesse précédente
+        if(this.estSuperieurVitesseMax()) 
+        {
+            //les nouvelles vitesses selon x et y sont modulés en fonction de la vitesse obtenue selon x et y
+            double nouvelleVitesseX = sqrt(this.vitesseProvisoire.getX()*this.vitesseProvisoire.getX()*this.vitesseMaximale*this.vitesseMaximale/this.calculVitesseCarre());
+                       double nouvelleVitesseY = sqrt(this.vitesseProvisoire.getY()*this.vitesseProvisoire.getY()*this.vitesseMaximale*this.vitesseMaximale/this.calculVitesseCarre());
+ 
+         this.vitesseProvisoire.setLocation(nouvelleVitesseX, nouvelleVitesseY);
+        }
+        
+    }
+
+//moveBoid permet debouger le boid.
+    public void moveBoid() {
+        this.vitesse = this.vitesseProvisoire;
+        this.setLocalisation(this.localisationProvisoire.getX(),
+                this.localisationProvisoire.getY());
+        this.setAngle();
+        this.voisins = new Stack(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
 
     }
 
@@ -214,7 +273,6 @@ public class Boids extends Cellule {
     }
 
     //calcul x modulo y
-
     public int mod(int x, int y) {
         return (x + y) % y;
     }

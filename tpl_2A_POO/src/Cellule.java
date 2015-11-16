@@ -33,7 +33,7 @@ public class Cellule {
     }
 
     /*méthode permettant de mettre l'état de la cellule de manière aléatoire entre 0 et e (ce ne sera que entre 0 et 1 vu la méthode setEtat mais peut etre que ca peut servir pour la question suivante)*/
-    public void setEtatAléatoire(int e) {
+    protected void setEtatAléatoire(int e) {
         Random r = new Random();
         this.setEtat(r.nextInt(e));
     }
@@ -42,7 +42,7 @@ public class Cellule {
     
     /*setEtatAléatoireProbabilité(float p) permet de choisir par le biais de p la probabilité que la cellule soit dans l'état vivant*/
 
-    public void setEtatAléatoireProbabilité(float p) {
+    protected void setEtatAléatoireProbabilité(float p) {
         Random r = new Random();
         if (r.nextFloat() <= p) {
             this.etat = 1;
@@ -51,20 +51,20 @@ public class Cellule {
         }
     }
 
-    public void setEtat(int e) {
+    protected void setEtat(int e) {
     
         this.etat = e;
     }
 
-    public int getEtat() {
+    protected int getEtat() {
         return this.etat;
     }
 
-    public Point getlocalisation() {
+    protected Point getlocalisation() {
         return this.localisation;
     }
 
-    public void setLocalisation(double x, double y) {
+    protected void setLocalisation(double x, double y) {
         this.localisation.setLocation(x,y);
     }
 }

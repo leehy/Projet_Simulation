@@ -44,6 +44,7 @@ public class JeuDeLaVie implements Simulable {
 
     }
 
+    //setSizeSim permet de régler la taille de la fenêtre gui
     public void setSizeSim(int sizeSimX, int sizeSimY) throws RapportCelluleTailleException {
         if (sizeSimX * sizeSimY < 9 * (this.getNombreCelluleHauteur() * this.getNombreCelluleLongueur())) {
             throw new RapportCelluleTailleException((float) (sizeSimX * sizeSimY / (this.getNombreCelluleHauteur() * this.getNombreCelluleLongueur())));
@@ -61,18 +62,19 @@ public class JeuDeLaVie implements Simulable {
         return this.sizeSimY;
     }
     
-    public Cellule [][] getPlateau() {
+    protected Cellule [][] getPlateau() {
         return plateau;
     }
     
-    public int [][] getSauvegardeEtat () {
+    protected int [][] getSauvegardeEtat () {
         return sauvegardeEtat;
     }
     
-    public GUISimulator getGui() {
+    protected GUISimulator getGui() {
         return gui;
     }
     
+    //setNombreCellule permet de régler le nombre de cellules en hauteur et en longueur
     public void setNombreCellule(int NombreHauteur, int NombreLongueur) throws RapportCelluleTailleException {
         this.nombreCelluleHauteur = NombreHauteur;
         this.nombreCelluleLongueur = NombreLongueur;
@@ -107,66 +109,15 @@ public class JeuDeLaVie implements Simulable {
         return this.probabilité;
     }
 
-    /*
-     public GUISimulator getguiSimulator() throws RapportCelluleTailleException {
-     //si le rapport entre l'aire de la fenêtre et le nombre total de cellule n'est pas supérieur à 9 on lance l'exception
-     if ((this.getSizeSimX() * this.getSizeSimY()) < 9 * (this.getNombreCelluleHauteur() * this.getNombreCelluleLongueur())) {
-     throw new RapportCelluleTailleException((float) (this.getSizeSimX() * this.getSizeSimY()) / (this.getNombreCelluleHauteur() * this.getNombreCelluleLongueur()));
-     }
-     else {
-     return this.gui;
-     }
-     }
-     */
+ 
+    
     public GUISimulator getguiSimulator() {
         return this.gui;
     }
 
-    /*renvoie le nombre de voisins vivants pour la cellule du tableau à la ligne i, colonne j du plateau
-     public int getNombreVoisinsVivants(int i, int j) {
-     int compteur = 0;
-     //si on est pas aux extrémités du tableau
-     if (!(i == 0 || j == 0 || i == this.getNombreCelluleHauteur()-1 || j == this.getNombreCelluleLongueur()-1)) {
-     compteur = this.plateau[i - 1][j - 1].getEtat() + this.plateau[i][j - 1].getEtat() + this.plateau[i][j + 1].getEtat() + this.plateau[i - 1][j].getEtat() + this.plateau[i - 1][j + 1].getEtat() + this.plateau[i + 1][j - 1].getEtat() + this.plateau[i + 1][j + 1].getEtat() + this.plateau[i + 1][j].getEtat();
-     }
-     //si on est sur la première ligne du plateau. Il suffit de remplacer tous les i-1 par la dernière ligne du plateau
-     if (i == 0 && j != 0 && j != this.getNombreCelluleLongueur()-1) {
-     compteur = this.plateau[this.getNombreCelluleHauteur()-1][j - 1].getEtat() + this.plateau[i][j - 1].getEtat() + this.plateau[i][j + 1].getEtat() + this.plateau[this.getNombreCelluleHauteur()-1][j].getEtat() + this.plateau[this.getNombreCelluleHauteur()-1][j + 1].getEtat() + this.plateau[i + 1][j - 1].getEtat() + this.plateau[i + 1][j + 1].getEtat() + this.plateau[i + 1][j].getEtat();
-     }
-     //si on est sur la dernière ligne du plateau.
-     if (i == this.getNombreCelluleHauteur()-1 && j != 0 && j != this.getNombreCelluleLongueur()-1) {
-     compteur = this.plateau[i - 1][j - 1].getEtat() + this.plateau[i][j - 1].getEtat() + this.plateau[i][j + 1].getEtat() + this.plateau[i - 1][j].getEtat() + this.plateau[i - 1][j + 1].getEtat() + this.plateau[0][j - 1].getEtat() + this.plateau[0][j + 1].getEtat() + this.plateau[0][j].getEtat();
-     }
-     //si on est sur la première colonne du plateau
-     if (j == 0 && i != 0 && i != this.getNombreCelluleHauteur()-1) {
-     compteur = this.plateau[i - 1][this.getNombreCelluleLongueur()-1].getEtat() + this.plateau[i][this.getNombreCelluleLongueur()-1].getEtat() + this.plateau[i][j + 1].getEtat() + this.plateau[i - 1][j].getEtat() + this.plateau[i - 1][j + 1].getEtat() + this.plateau[i + 1][this.getNombreCelluleLongueur()-1].getEtat() + this.plateau[i + 1][j + 1].getEtat() + this.plateau[i + 1][j].getEtat();
-     }
-     //si onest sur la dernière colonne du plateau.
-     if (j == this.getNombreCelluleLongueur()-1 && i != 0 && i != this.getNombreCelluleHauteur()-1) {
-     compteur = this.plateau[i - 1][j - 1].getEtat() + this.plateau[i][j - 1].getEtat() + this.plateau[i][0].getEtat() + this.plateau[i - 1][j].getEtat() + this.plateau[i - 1][0].getEtat() + this.plateau[i + 1][j - 1].getEtat() + this.plateau[i + 1][0].getEtat() + this.plateau[i + 1][j].getEtat();
-     }
-     //si on est dans le coin en haut a gauche
-     if (i == 0 && j == 0) {
-     compteur = this.plateau[this.getNombreCelluleHauteur()-1][this.getNombreCelluleLongueur()-1].getEtat() + this.plateau[i][this.getNombreCelluleLongueur()-1].getEtat() + this.plateau[i][j + 1].getEtat() + this.plateau[this.getNombreCelluleHauteur()-1][j].getEtat() + this.plateau[this.getNombreCelluleHauteur()-1][j + 1].getEtat() + this.plateau[i + 1][this.getNombreCelluleLongueur()-1].getEtat() + this.plateau[i + 1][j + 1].getEtat() + this.plateau[i + 1][j].getEtat();
-     }
-     //si on est en dans le coin en bas a droite
-     if (i == this.getNombreCelluleHauteur()-1 && j == this.getNombreCelluleLongueur()-1) {
-     compteur = this.plateau[i - 1][j - 1].getEtat() + this.plateau[i][j - 1].getEtat() + this.plateau[i][0].getEtat() + this.plateau[i - 1][j].getEtat() + this.plateau[i - 1][0].getEtat() + this.plateau[0][j - 1].getEtat() + this.plateau[0][0].getEtat() + this.plateau[0][j].getEtat();
-     }
-     //si on est dans le coin en bas a gauche (j-1 devient this.getNombreCelluleLongueur()-1 et i+1 devient 0)
-     if (i == this.getNombreCelluleHauteur()-1 && j == 0) {
-     compteur = this.plateau[i - 1][this.getNombreCelluleLongueur()-1].getEtat() + this.plateau[i][this.getNombreCelluleLongueur()-1].getEtat() + this.plateau[i][j + 1].getEtat() + this.plateau[i - 1][j].getEtat() + this.plateau[i - 1][j + 1].getEtat() + this.plateau[0][this.getNombreCelluleLongueur()-1].getEtat() + this.plateau[0][j + 1].getEtat() + this.plateau[0][j].getEtat();
-     }
-     //si on est dans le coin en haut a droite (i-1 devient this.getNombreCelluleHauteur()-1 et j+1 devient 0)
-     if (i == 0 && j == this.getNombreCelluleLongueur()-1) {
-     compteur = this.plateau[this.getNombreCelluleHauteur()-1][j - 1].getEtat() + this.plateau[i][j - 1].getEtat() + this.plateau[i][0].getEtat() + this.plateau[this.getNombreCelluleHauteur()-1][j].getEtat() + this.plateau[this.getNombreCelluleHauteur()-1][0].getEtat() + this.plateau[i + 1][j - 1].getEtat() + this.plateau[i + 1][0].getEtat() + this.plateau[i + 1][j].getEtat();
-     }
-     return compteur;
-     }
-     */
-    /*renvoie le nombre de voisins vivants pour la cellule du tableau à la ligne i, colonne j du plateau
-     */
-    
+  
+    //getNombreVoisinsVivants renvoie le nombre de voisins vivants pour la cellule 
+    //placée en (i,j) sur le plateau
     public int getNombreVoisinsVivants(int i, int j) {
         int compteur = 0;
         for (int a = -1; a < 2; a++) {

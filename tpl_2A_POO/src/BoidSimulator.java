@@ -21,14 +21,16 @@ public class BoidSimulator implements Simulable {
     private int NbBoids;
     private int rayon;
     private int rayonDanger;
+    private int vMax;
     private GUISimulator gui;
     
-    BoidSimulator (int n, int l, int h, int r, int rD){
+    BoidSimulator (int n, int l, int h, int r, int rD, int v){
         NbBoids = n;
         longueur = l;
         hauteur = h;
         rayon = r;
         rayonDanger = rD;
+        vMax = v;
         
         hachage = new Stack [l/r][h/r];
         
@@ -80,6 +82,7 @@ public class BoidSimulator implements Simulable {
     private void delBoid (Boids b) { //supprime un boid à la table de hachage
         Point p = caseCorrespondante (b);
         Stack<Boids> s = new Stack<Boids> ();
+        System.out.println(b);
         hachage [p.x][p.y] = auxDelete(b,s,hachage [p.x][p.y]);
     }
     
@@ -156,16 +159,28 @@ public class BoidSimulator implements Simulable {
         }
     }
     
-    private void auxAfficheNext (Stack<Boids> hach, Stack<Boids> parcours){
+    private void auxCalculeNext (Stack<Boids> hach, Stack<Boids> parcours){
         try {
         Boids b = parcours.pop ();  //On prend le premier élément de la pile
         
-        delBoid (b);    //On supprime cet élément de la table de hachage
-        b.moveBoid(voisinsPotentiels(b));   //On calcule sa nouvelle position
-        addBoid (b);    //On le met dans sa nouvelle position dans la table de hachage
+        b.calculBoid(voisinsPotentiels(b));   //On calcule sa nouvelle position
         
         b.afficheBoid (gui);    //On l'affiche
-        auxAfficheNext (hach,parcours); //On appelle récursivement la fonction
+        auxCalculeNext (hach,parcours); //On appelle récursivement la fonction
+        }
+        catch (EmptyStackException e){  //Quand on arrive au bout de la pile, on s'arrête
+        }
+    }
+    
+    private void auxAfficheNext (Stack<Boids> hach){
+        try {
+        Boids b = hach.pop();
+        delBoid (b);    //On supprime cet élément de la table de hachage
+        b.moveBoid ();
+        b.afficheBoid(gui);
+        addBoid (b);    //On le met dans sa nouvelle position dans la table de hachage
+        auxAfficheNext (hach);
+        hach.push (b);
         }
         catch (EmptyStackException e){  //Quand on arrive au bout de la pile, on s'arrête
         }
@@ -174,23 +189,29 @@ public class BoidSimulator implements Simulable {
     private void afficheNext (){
         for (int i = 0; i < longueur/rayon; i++) {
             for (int j = 0; j < hauteur/rayon; j++) {
-                auxAfficheNext (hachage[i][j], copiePile (hachage[i][j])); 
+                auxCalculeNext (hachage[i][j], copiePile (hachage[i][j])); 
+            }
+        }
+        
+        for (int i = 0; i < longueur/rayon; i++) {
+            for (int j = 0; j < hauteur/rayon; j++) {
+                auxAfficheNext (hachage[i][j]); 
             }
         }
     }
     
     private void ajoute (int x, int y, int vx,int vy){
-        Boids b = new Boids (x,y,vx,vy,rayon,rayonDanger,longueur,hauteur);
+        Boids b = new Boids (x,y,vx,vy,rayon,rayonDanger,vMax,longueur,hauteur);
         addBoid (b);
     }
     
     private void ajoutePoisson (int x, int y, int vx,int vy){
-        Poisson b = new Poisson (x,y,vx,vy,rayon,rayonDanger,longueur,hauteur);
+        Poisson b = new Poisson (x,y,vx,vy,rayon,rayonDanger,vMax,longueur,hauteur);
         addBoid (b);
     }
     
     private void ajouteLumiere (int x, int y, int vx,int vy){
-        Lumiere b = new Lumiere (x,y,vx,vy,rayon,rayonDanger,longueur,hauteur);
+        Lumiere b = new Lumiere (x,y,vx,vy,rayon,rayonDanger,vMax,longueur,hauteur);
         addBoid (b);
     }
     
@@ -212,15 +233,16 @@ public class BoidSimulator implements Simulable {
         //ajoute (l*9/10,h*9/10);
         //ajoute (200,225,1,1);
         ajouteLumiere (500,300,0,0);
+        ajoute (510,310,0,0);
         //ajoute (250,25);
         //ajoute (200,250);
         
         
-        for (int ici = 0; ici < (2*NbBoids); ici++){
+        /*for (int ici = 0; ici < (2*NbBoids); ici++){
             for (int icj = 0; icj < NbBoids; icj++){
                 ajoutePoisson (l*ici/(2*NbBoids),h*icj/NbBoids,0,0);
             }
-        }
+        }*/
         
         System.out.println ("fin des ajouts");
         
@@ -230,6 +252,9 @@ public class BoidSimulator implements Simulable {
     @Override
     public void next (){
         gui.reset();
+        for (int i = 0; i<30; i++){
+            System.out.println ("");
+        }
         int l = longueur/rayon*rayon;
         int h = hauteur/rayon*rayon;
         GraphicalElement e = new Rectangle(l/2,h/2, Color.RED, Color.BLACK, l,h);

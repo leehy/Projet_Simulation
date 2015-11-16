@@ -17,8 +17,8 @@ import java.awt.Point;
  */
 public class Lumiere extends Boids {
 
-    public Lumiere(int x, int y, int Vx, int Vy, int r, int rSecurite, int tailleLongueur, int tailleHauteur) {
-        super(x, y, Vx, Vy, r, rSecurite, tailleLongueur, tailleHauteur);
+    public Lumiere(int x, int y, int Vx, int Vy, int r, int rSecurite, int vitesseMax, int tailleLongueur, int tailleHauteur) {
+        super(x, y, Vx, Vy, r, rSecurite, vitesseMax, tailleLongueur, tailleHauteur);
         this.setEtat(2);
         //l'etat d'une lumiere sera par defaut 2
     }
