@@ -16,24 +16,20 @@ import gui.GUISimulator;
 public class TestJeuDeLaVie {
 
     // si on met pas le try et le catch dans le test ca compile pas !
-    
     public static void main(String[] args) {
         JeuDeLaVie jeu = new JeuDeLaVie();
-        jeu.setProbabilité((float) 0.1);
-        //si on voit tout noir c'est qu'il y a trop de cellules pour la taille
-       try {
-            jeu.setSizeSim(500, 500);
-            jeu.setNombreCellule(50, 50);
-            GUISimulator gui = jeu.getguiSimulator();
-            gui.setSimulable(jeu);
-        } 
-       catch (RapportCelluleTailleException e) {
-        }
+        /*  jeu.setProbabilité((float) 0.1);
+         //si on voit tout noir c'est qu'il y a trop de cellules pour la taille
+         try {
+         jeu.setSizeSim(500, 500);
+         jeu.setNombreCellule(300, 300);
+            
+         } 
+         catch (RapportCelluleTailleException e) {
+         }
+         }*/
+        GUISimulator gui = jeu.getguiSimulator();
+        gui.setSimulable(jeu);
+
     }
-    
 }
-/* Cas à traiter : 
- Cas où le jeu ne peut plus avancer car la disposition des cellules ne permet pas d'avoir de nouvelles naissances
- Cas où toutes les cellules sont mortes
- Cas où toutes les cellules sont vivantes
- */
