@@ -203,8 +203,8 @@ public class Boids extends Cellule {
     //il faut lui envoyer une liste de voisins potentiels afin qu'il calcule les véritables voisins et ainsi que les règles puissent être appliqués    
     public void calculBoid(Stack<Boids> PileVoisinsPotentiels) {
          this.setVoisins(PileVoisinsPotentiels);
-        this.vitesseProvisoire.setLocation(this.vitesseProvisoire.getX() + this.regle1().getX()  + this.regle2().getX() + this.regle3().getX(),
-                this.vitesseProvisoire.getY() + this.regle1().getY() + this.regle2().getY()+ this.regle3().getY());
+        this.vitesseProvisoire.setLocation(this.vitesse.getX() + this.regle1().getX()  + this.regle2().getX() + this.regle3().getX(),
+                this.vitesse.getY() + this.regle1().getY() + this.regle2().getY()+ this.regle3().getY());
         this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
                 this.getlocalisation().getY() + this.vitesse.getY());
     }
