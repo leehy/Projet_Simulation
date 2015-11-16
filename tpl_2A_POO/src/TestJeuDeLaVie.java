@@ -6,8 +6,8 @@
 package src;
 
 import gui.GUISimulator;
-/*hop hop les gars je vous laisse un petit message ici comme ca c'est sur que vous le verrez.
- */
+
+
 
 /**
  *
