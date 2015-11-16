@@ -213,20 +213,7 @@ public class Boids extends Cellule {
         return "le boid se trouve à la position : " + this.getlocalisation().toString() + " et sa vitesse est : " + this.vitesse.toString();
     }
 
-    //calcul x modulo y
-
-    public int mod(int x, int y) {
-        return (x + y) % y;
-    }
-
-    //access renvoie un point dont les coordonnées sont modulées
-    private Point access(Point v) { //v doit être un couple (x,y)
-        Point p = new Point();
-        p.x = mod(v.x, this.tailleFenetreHauteur);
-        p.y = mod(v.y, this.tailleFenetreLongueur);
-        return p;
-    }
-
+ 
     public void afficheBoid(GUISimulator gui) {
 
         //on affiche l'élément que si on est dans la fenêtre de gui

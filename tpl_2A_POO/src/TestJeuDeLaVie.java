@@ -6,11 +6,14 @@
 package src;
 
 import gui.GUISimulator;
-/*hop hop les gars je vous laisse un petit message ici comme ca c'est sur que vous le verrez.
- */
+
+
 
 /**
- *
+ *TestJeuDeLaVie permet de tester le jeu de la vie, le constructeur par défaut met une configuration qui va bien
+ * mais vous pouvez régler plusieurs paramètres comme la probabilité qu'une cellule soit morte ou vivante, 
+ * la taille de la fenêtre, le nombre de cellule en décommentant les commentaires qui suivent
+ * 
  * @author sacha
  */
 public class TestJeuDeLaVie {
@@ -28,7 +31,7 @@ public class TestJeuDeLaVie {
          catch (RapportCelluleTailleException e) {
          }
          }*/
-        GUISimulator gui = jeu.getguiSimulator();
+        GUISimulator gui = jeu.getGui();
         gui.setSimulable(jeu);
 
     }

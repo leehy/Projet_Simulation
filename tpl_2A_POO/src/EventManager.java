@@ -52,29 +52,7 @@ public class EventManager extends Event {
         return this.finDate;
     }
 
-    public void addEvent(Event e) {
-        // Cette partie la n'est pas utilisee, j'avais cru lire un truc comme quoi il fallait eviter 
-        // les doublons, et je me suis bien fait chier ...
-        // Gardons le de côté au cas où
-        /*if (this.listEvent.size() == 0) {
-         this.listEvent.add(e);
-         this.finDate = e.getDate();
-         System.out.println("Tableau vide");
-         System.out.println("La date est : " + e.getDate());
-         } else {
-         this.listEvent.add(e);
-         for (int index = this.listEvent.size() - 2; index > -1; index--) {
-         if (e.compareTo(this.listEvent.get(index)) == 0) {
-         e.setDate(e.getDate() + 1);
-         System.out.println("Même élément trouvé");
-         System.out.println("La date est : " + this.listEvent.get(index).getDate());
-         System.out.println("La nouvelle date est : " + e.getDate());
-         break;
-         }
-         }
-
-         } */
-        
+    public void addEvent(Event e) {        
         // On ajoute l'évènement au tableau
         this.listEvent.add(e);
         // On tri le tableau dans l'ordre des dates croissante
@@ -87,6 +65,7 @@ public class EventManager extends Event {
         // On incrémente la date
         this.currentDate++;
         // On affiche les dates courantes et finales pour suivre
+        System.out.println("-----------------------------------");
         System.out.println("current date is :" + this.getCurrentDate());
         System.out.println("Final date is :" + this.getFinalDate());
 
