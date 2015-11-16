@@ -15,7 +15,7 @@ import gui.GUISimulator;
 public class TestBoidSimulator {
     public static void main(String[] args) {
         
-        BoidSimulator b = new BoidSimulator(10,1000,600,150,20,1000);
+        BoidSimulator b = new BoidSimulator(10,1000,600,150,10);
         //si on voit tout noir c'est qu'il y a trop de cellules pour la taille
         GUISimulator gui = b.getGui();
         gui.setSimulable(b);

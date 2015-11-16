@@ -23,7 +23,6 @@ public class JeuDeLaVie implements Simulable {
     private int sizeSimY;
     private int nombreCelluleHauteur;
     private int nombreCelluleLongueur;
-    private int NombreDeTourJoue;
 
     //constructeur par défaut crée un tableau de 25*25 cellules initialisées aléatoirement
     public JeuDeLaVie() {
@@ -153,7 +152,6 @@ public class JeuDeLaVie implements Simulable {
         // On efface l'ecran
 
         this.gui.reset();
-        NombreDeTourJoue = 0;
         //On réinitialise le plateau de manière aléatoire (valeur entre 0 et 1)
         for (int i = 0; i < this.getNombreCelluleHauteur(); i++) {
             for (int j = 0; j < this.getNombreCelluleLongueur(); j++) {
@@ -176,7 +174,6 @@ public class JeuDeLaVie implements Simulable {
             // On efface l'écran
 
             gui.reset();
-            NombreDeTourJoue = NombreDeTourJoue + 1;
             for (int i = 0; i < this.getNombreCelluleHauteur(); i++) {
                 for (int j = 0; j < this.getNombreCelluleLongueur(); j++) {
                     //si la cellule i,j du plateau est morte
