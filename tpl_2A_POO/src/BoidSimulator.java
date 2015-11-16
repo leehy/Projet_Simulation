@@ -15,8 +15,8 @@ import java.awt.Color;
  */
 public class BoidSimulator implements Simulable {
     
-    private Stack<Boids> hachage [][];  
-    private int hauteur;
+    private Stack<Boids> hachage [][];  //représente la grille qui nous permettra de hacher
+    private int hauteur;    //hauteur de la fenêtre
     private int longueur;
     private int NbBoids;
     private int rayon;
@@ -185,13 +185,13 @@ public class BoidSimulator implements Simulable {
     }
     
     private void ajoutePoisson (int x, int y, int vx,int vy){
-        //Poisson b = new Poisson (x,y,vx,vy,rayon,rayonDanger,longueur,hauteur);
-        //addBoid (b);
+        Poisson b = new Poisson (x,y,vx,vy,rayon,rayonDanger,longueur,hauteur);
+        addBoid (b);
     }
     
     private void ajouteLumiere (int x, int y, int vx,int vy){
-        //Lumiere b = new Lumiere (x,y,vx,vy,rayon,rayonDanger,longueur,hauteur);
-        //addBoid (b);
+        Lumiere b = new Lumiere (x,y,vx,vy,rayon,rayonDanger,longueur,hauteur);
+        addBoid (b);
     }
     
     @Override
@@ -218,7 +218,7 @@ public class BoidSimulator implements Simulable {
         
         for (int ici = 0; ici < (2*NbBoids); ici++){
             for (int icj = 0; icj < NbBoids; icj++){
-                ajoute (l*ici/(2*NbBoids),h*icj/NbBoids,0,0);
+                ajoutePoisson (l*ici/(2*NbBoids),h*icj/NbBoids,0,0);
             }
         }
         

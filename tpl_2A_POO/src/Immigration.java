@@ -36,19 +36,19 @@ public class Immigration extends JeuDeLaVie {
 	}
     
     
-    private int getNombreVoisinsSuperieur(int i, int j) { //Donne le nombre de voisins ayant le même état que la cellule plateau [i][j]
+    private int getNombreVoisinsSuperieur(int i, int j) { //Donne le nombre de voisins ayant le même état que la cellule plateau [i][j] + 1
         int compteur = 0;
         int etatA = (1 + (getPlateau()) [i][j].getEtat())%nombreCouleurs;
         for (int a = -1; a<2; a++){
             for (int b = -1; b<2; b++){
-                int etatB = ((getPlateau())[((i + a) % getNombreCelluleHauteur() + getNombreCelluleHauteur())%getNombreCelluleHauteur()][((j + b) % getNombreCelluleLongueur() + getNombreCelluleLongueur())% getNombreCelluleLongueur() ]).getEtat();
+                int etatB = ((getPlateau())[((i + a) + getNombreCelluleHauteur())%getNombreCelluleHauteur()][((j + b)+ getNombreCelluleLongueur())% getNombreCelluleLongueur() ]).getEtat();
                 //modulo un peu sale car java renvoie juste le reste de la division euclidienne (donc -1 pour -1) et du coup on sort du tableau avec juste %
                 if (etatA == etatB){
                     compteur ++;
                 }
             }
         }
-        return compteur - 1;
+        return compteur;
     }
     
     @Override
