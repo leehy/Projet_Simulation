@@ -56,7 +56,7 @@ public class Immigration extends JeuDeLaVie {
         // On efface l'ecran
 
         getGui().reset();
-        //On réinitialise le plateau de manière aléatoire (valeur entre 0 et 1)
+        //On réinitialise le plateau de manière aléatoire (valeur entre 0 et n-1)
         for (int i = 0; i < this.getNombreCelluleHauteur(); i++) {
             for (int j = 0; j < this.getNombreCelluleLongueur(); j++) {
                 getPlateau ()[i][j].setEtatAléatoire(nombreCouleurs);

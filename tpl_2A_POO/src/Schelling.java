@@ -120,7 +120,7 @@ public class Schelling extends JeuDeLaVie{
         }
     }
 
-    private void demenage (Stack l) { //On fait déménager toutes les habitations retenues en mémoire
+    private void demenage (Stack l) { //On dédouble toutes les habitations retenues en mémoire
         if (l.empty ()) {
             return;
         }
