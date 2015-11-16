@@ -177,6 +177,7 @@ public class BoidSimulator implements Simulable {
         Boids b = hach.pop();
         delBoid (b);    //On supprime cet élément de la table de hachage
         b.moveBoid ();
+        b.afficheBoid(gui);
         addBoid (b);    //On le met dans sa nouvelle position dans la table de hachage
         auxAfficheNext (hach);
         hach.push (b);
@@ -232,15 +233,16 @@ public class BoidSimulator implements Simulable {
         //ajoute (l*9/10,h*9/10);
         //ajoute (200,225,1,1);
         ajouteLumiere (500,300,0,0);
+        ajoute (510,310,-15,-15);
         //ajoute (250,25);
         //ajoute (200,250);
         
         
-        for (int ici = 0; ici < (2*NbBoids); ici++){
+        /*for (int ici = 0; ici < (2*NbBoids); ici++){
             for (int icj = 0; icj < NbBoids; icj++){
                 ajoutePoisson (l*ici/(2*NbBoids),h*icj/NbBoids,0,0);
             }
-        }
+        }*/
         
         System.out.println ("fin des ajouts");
         
@@ -250,6 +252,9 @@ public class BoidSimulator implements Simulable {
     @Override
     public void next (){
         gui.reset();
+        for (int i = 0; i<30; i++){
+            System.out.println ("");
+        }
         int l = longueur/rayon*rayon;
         int h = hauteur/rayon*rayon;
         GraphicalElement e = new Rectangle(l/2,h/2, Color.RED, Color.BLACK, l,h);
