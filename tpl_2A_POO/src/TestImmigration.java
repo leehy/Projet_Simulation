@@ -8,7 +8,7 @@ package src;
 import gui.GUISimulator;
 
 /**
- *
+ *TestImmigration permet de tester le jeu de l'immigration
  * @author amaury
  */
 public class TestImmigration {

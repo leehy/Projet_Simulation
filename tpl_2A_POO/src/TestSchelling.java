@@ -8,7 +8,7 @@ package src;
 import gui.GUISimulator;
 
 /**
- *
+ *TestSchelling permet de tester le jeu Schelling
  * @author amaury
  */
 public class TestSchelling {

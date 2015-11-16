@@ -6,7 +6,7 @@
 package src;
 import java.util.*;
 /**
- *
+ *TestBoid permet de tester le bon déplacement des boids
  * @author sacha
  */
 public class TestBoids {
