@@ -21,7 +21,7 @@ public class TestSchelling {
        try {
             jeu.setSizeSim(750, 750);
             jeu.setNombreCellule(50, 50);
-            GUISimulator gui = jeu.getguiSimulator();
+            GUISimulator gui = jeu.getGui();
             gui.setSimulable(jeu);
         } catch (RapportCelluleTailleException e) {
         }

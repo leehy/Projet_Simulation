@@ -24,7 +24,10 @@ public class JeuDeLaVie implements Simulable {
     private int nombreCelluleHauteur;
     private int nombreCelluleLongueur;
 
-    //constructeur par défaut crée un tableau de 25*25 cellules initialisées aléatoirement
+    /**
+    *constructeur par défaut crée un tableau de 25*25 cellules initialisées aléatoirement
+    * @return
+    */
     public JeuDeLaVie() {
         this.nombreCelluleHauteur = 25;
         this.nombreCelluleLongueur = 25;
@@ -43,7 +46,12 @@ public class JeuDeLaVie implements Simulable {
 
     }
 
-    //setSizeSim permet de régler la taille de la fenêtre gui
+    /**
+     * setSizeSim permet de régler la taille de la fenêtre gui
+     * Elle prend en argument la taille en longueur puis la taille en hauteur
+     * Elle peut envoyer une exception à cause si le rapport entre le nombre de cellule et la taille n'est pas bon
+     * @return
+      */
     public void setSizeSim(int sizeSimX, int sizeSimY) throws RapportCelluleTailleException {
         if (sizeSimX * sizeSimY < 9 * (this.getNombreCelluleHauteur() * this.getNombreCelluleLongueur())) {
             throw new RapportCelluleTailleException((float) (sizeSimX * sizeSimY / (this.getNombreCelluleHauteur() * this.getNombreCelluleLongueur())));
@@ -53,27 +61,52 @@ public class JeuDeLaVie implements Simulable {
         }
     }
 
+    /**
+    *getSizeSimX() renvoie la taille de la fenêtre gui en longueur
+    * @return
+    */
     public int getSizeSimX() {
         return this.sizeSimX;
     }
 
+    /**
+     * renvoie la taille de la fenêtre gui en hauteur 
+     * @return 
+     */
     public int getSizeSimY() {
         return this.sizeSimY;
     }
     
+    /**
+     * getPlateau() renvoie le plateau (un tableau de Cellules 2 dimensions)
+     * @return 
+     */
     protected Cellule [][] getPlateau() {
         return plateau;
     }
     
+    /**
+     * getSauvergardeEtat() renvoie un tableau 2 dimensions d'entiers de la sauvegarde de l'état des cellules
+     * @return 
+     */
     protected int [][] getSauvegardeEtat () {
         return sauvegardeEtat;
     }
     
+    /**
+     * getGui() renvoie le GUISimulator
+     * @return 
+     */
     protected GUISimulator getGui() {
         return gui;
     }
     
-    //setNombreCellule permet de régler le nombre de cellules en hauteur et en longueur
+    /**setNombreCellule permet de régler le nombre de cellules en hauteur et en longueur
+     * elle renvoie une exception si le rapport entre le nombre de cellules et la taille de la fenêtre n'est pas bon
+     * @param NombreHauteur
+     * @param NombreLongueur
+     * @throws RapportCelluleTailleException 
+     */
     public void setNombreCellule(int NombreHauteur, int NombreLongueur) throws RapportCelluleTailleException {
         this.nombreCelluleHauteur = NombreHauteur;
         this.nombreCelluleLongueur = NombreLongueur;
@@ -90,33 +123,48 @@ public class JeuDeLaVie implements Simulable {
         }
     }
 
+    /**
+     * getNombreCelluleHauteur() renvoie le nombre de cellule par colonne
+     * @return 
+     */
     public int getNombreCelluleHauteur() {
         return this.nombreCelluleHauteur;
     }
 
+    /**
+     * getNombreCelluleLongueur renvoie le nombre de cellules par ligne
+     * @return 
+     */
     public int getNombreCelluleLongueur() {
         return this.nombreCelluleLongueur;
     }
 
-    //permet de choisir la probabilité qu'une cellule soit vivante
+    /**
+     * setProbabilité permet de choisir la probabilité qu'une cellule soit vivante
+     * @param p 
+     */
     public void setProbabilité(float p) {
         this.probabilité = p;
 
     }
 
+    /**
+     * getProbabilité() renvoie la probabilité qu'un cellule soit vivante
+     * @return 
+     */
     public float getProbabilité() {
         return this.probabilité;
     }
 
- 
-    
-    public GUISimulator getguiSimulator() {
-        return this.gui;
-    }
 
   
-    //getNombreVoisinsVivants renvoie le nombre de voisins vivants pour la cellule 
-    //placée en (i,j) sur le plateau
+    /**
+     * getNombreVoisinsVivants renvoie le nombre de voisins vivants pour la cellule 
+     * placée en (i,j) sur le plateau
+     * @param i
+     * @param j
+     * @return 
+     */
     public int getNombreVoisinsVivants(int i, int j) {
         int compteur = 0;
         for (int a = -1; a < 2; a++) {
@@ -129,7 +177,11 @@ public class JeuDeLaVie implements Simulable {
         return compteur - plateau[i][j].getEtat();
     }
 
-    
+    /**
+     * getCouleur renvoie la couleur d'une cellule
+     * @param n
+     * @return 
+     */
     public Color getCouleur (int n){
             switch (n) {
 		case 0 : return Color.WHITE; //cas d'une habitation libre
@@ -137,6 +189,11 @@ public class JeuDeLaVie implements Simulable {
             }
 	}
     
+    /**
+     * afficheCellule(i,j) permet d'afficher une cellule aux coordonnées i,j
+     * @param i
+     * @param j 
+     */
     public void afficheCellule (int i, int j) {
         (getGui()).addGraphicalElement(new Rectangle(
                 j * this.getSizeSimX() / this.getNombreCelluleLongueur() + 10,
@@ -147,6 +204,11 @@ public class JeuDeLaVie implements Simulable {
                 this.getSizeSimY() / this.getNombreCelluleHauteur()));
     }
     
+    /**
+     * restart() permet de réinitialiser le plateau avec des cellules mortes et vivantes
+     * réparties de manière aléatoire selon la probabilité choisie
+     * @return
+     */
     @Override
     public void restart() {
         // On efface l'ecran
@@ -169,6 +231,10 @@ public class JeuDeLaVie implements Simulable {
     }
 
     @Override
+    /**
+     * next() permet d'afficher le plateau à l'état suivant
+     * @return
+     */
     public void next() {
        
             // On efface l'écran
