@@ -84,10 +84,12 @@ public class Balls extends Point{
         this.ListPoint.add(point);
         Point tmp = new Point(point);
         this.LInitial.add(tmp);
+        //this.setSpeedCoeff(this.ListPoint.size(), 1, 1);
     }
     
     public void removeBall(Point point){
         this.ListPoint.remove(point);
+        
     }
     
     void translateBalls (int dx, int dy){
@@ -122,7 +124,7 @@ public class Balls extends Point{
         int index=0;
         String buff="";
         while(!(index == this.getSizeList())){
-        buff =buff + "La position de la balle " + index + " est (" + LInitial.get(index).getX() + ", " + LInitial.get(index).getY() + ") \n";
+        buff =buff + "La position initiale de la balle " + index + " est (" + LInitial.get(index).getX() + ", " + LInitial.get(index).getY() + ") \n";
         index ++;
         }
         return buff;

@@ -9,11 +9,8 @@ import gui.GUISimulator;
 import gui.Simulable;
 import java.awt.Color;
 import gui.Oval;
-import java.awt.Point;
 import java.util.ArrayList;
-import java.lang.Math;
 import static java.lang.Math.abs;
-import static java.lang.Math.max;
 
 /**
  *
@@ -22,7 +19,6 @@ import static java.lang.Math.max;
 public class BallsSimulator extends Event implements Simulable {
 
     private Balls balls;
-    private Balls balls2;
     private GUISimulator gui;
 
     //Attribut pour controler la taille de la simulation
@@ -35,7 +31,6 @@ public class BallsSimulator extends Event implements Simulable {
 
     // Attribut pour integrer le gestionnaire d'evenement
     private ArrayList<Balls> ArrayOfBalls = new ArrayList<>();
-    private EventManager manager;
 
     public BallsSimulator() {
         this.balls = new Balls();
@@ -45,7 +40,6 @@ public class BallsSimulator extends Event implements Simulable {
         this.speedSimX = 15;
         this.speedSimY = 25;
         this.ArrayOfBalls = new ArrayList<>();
-        this.manager = new EventManager();
     }
 
     public BallsSimulator(Balls balls, int date) {
@@ -58,6 +52,7 @@ public class BallsSimulator extends Event implements Simulable {
         this.gui = new GUISimulator(sizeSimX, sizeSimY, Color.BLACK);
         this.ArrayOfBalls.add(this.getBalls());
     }
+
 
     public BallsSimulator(Balls balls, int date, GUISimulator gui) {
         super(date);
@@ -138,9 +133,6 @@ public class BallsSimulator extends Event implements Simulable {
         return this.balls;
     }
 
-    public EventManager getManager() {
-        return this.manager;
-    }
 
     @Override
     public void restart() {
