@@ -209,7 +209,27 @@ public class Boids extends Cellule {
                 this.vitesse.getY() + this.regle1().getY() + this.regle2().getY()+ this.regle3().getY());
         this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
                 this.getlocalisation().getY() + this.vitesse.getY());
+        //si on sort de la fenêtre (selon les X) on repart dans l'autre sens ie création du rebond
+        if (this.localisationProvisoire.getX() > this.tailleFenetreLongueur ||
+                this.localisationProvisoire.getX() < 0) {
+            this.vitesseProvisoire.setLocation(-this.vitesseProvisoire.getX(),
+                    this.vitesseProvisoire.getY());
+            this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
+                this.getlocalisation().getY() + this.vitesse.getY());
+            
+        }
+        //de meme rebond selon les Y
+        if (this.localisationProvisoire.getY() > this.tailleFenetreLongueur ||
+                this.localisationProvisoire.getY() < 0) {
+            this.vitesseProvisoire.setLocation(this.vitesseProvisoire.getX(),
+                    -this.vitesseProvisoire.getY());
+            this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
+                this.getlocalisation().getY() + this.vitesse.getY());
+            
+        }
     }
+    
+    
 //moveBoid permet debouger le boid.
     public void moveBoid() {
         this.vitesse = this.vitesseProvisoire;
