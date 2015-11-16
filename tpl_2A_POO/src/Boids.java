@@ -21,6 +21,8 @@ public class Boids extends Cellule {
 
     private double angle;
     private Point vitesse;
+    private Point vitesseProvisoire;
+    private Point localisationProvisoire;
     //rayonAction est le rayon au delà duquel les autres boids ne sont plus concernés comme des voisins
     private int rayonAction;
     //rayonSécurité est le rayon en-decà duquel les autres boids sont concernés comme trop proche, il faut donc changer de direction
@@ -196,14 +198,20 @@ public class Boids extends Cellule {
        
     }
 
-//moveBoid permet de mettre le boid dans l'état suivant en terme de position et de vitesse suivant les différentes règles définies.
-//il faut lui envoyer une liste de voisins potentiels afin qu'il calcule les véritables voisins et ainsi que les règles puissent être appliqués    
-    public void moveBoid(Stack<Boids> PileVoisinsPotentiels) {
-        this.setVoisins(PileVoisinsPotentiels);
-        this.vitesse.setLocation(this.vitesse.getX() + this.regle1().getX()  + this.regle2().getX() + this.regle3().getX(),
-                this.vitesse.getY() + this.regle1().getY() + this.regle2().getY()+ this.regle3().getY());
-        this.setLocalisation(this.getlocalisation().getX() + this.vitesse.getX(),
+    //calculBoid permet de calculer la prochaine position et la prochaine vitesse du boid
+    //sans changer ces valeurs mais en les stockant de manière provisoire
+    //il faut lui envoyer une liste de voisins potentiels afin qu'il calcule les véritables voisins et ainsi que les règles puissent être appliqués    
+    public void calculBoid(Stack<Boids> PileVoisinsPotentiels) {
+         this.setVoisins(PileVoisinsPotentiels);
+        this.vitesseProvisoire.setLocation(this.vitesseProvisoire.getX() + this.regle1().getX()  + this.regle2().getX() + this.regle3().getX(),
+                this.vitesseProvisoire.getY() + this.regle1().getY() + this.regle2().getY()+ this.regle3().getY());
+        this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
                 this.getlocalisation().getY() + this.vitesse.getY());
+    }
+//moveBoid permet debouger le boid.
+    public void moveBoid() {
+        this.vitesse = this.vitesseProvisoire;
+        this.setLocalisation(this.localisationProvisoire.getX(),this.localisationProvisoire.getY());
         this.voisins.clear(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
 
     }
