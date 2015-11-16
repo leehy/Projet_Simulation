@@ -156,25 +156,40 @@ public class BoidSimulator implements Simulable {
         }
     }
     
-    private void auxAfficheNext (Stack<Boids> hach, Stack<Boids> parcours){
+    private void auxCalculeNext (Stack<Boids> hach, Stack<Boids> parcours){
         try {
         Boids b = parcours.pop ();  //On prend le premier élément de la pile
         
         delBoid (b);    //On supprime cet élément de la table de hachage
-        b.moveBoid(voisinsPotentiels(b));   //On calcule sa nouvelle position
+        b.calculBoid(voisinsPotentiels(b));   //On calcule sa nouvelle position
         addBoid (b);    //On le met dans sa nouvelle position dans la table de hachage
         
         b.afficheBoid (gui);    //On l'affiche
-        auxAfficheNext (hach,parcours); //On appelle récursivement la fonction
+        auxCalculeNext (hach,parcours); //On appelle récursivement la fonction
         }
         catch (EmptyStackException e){  //Quand on arrive au bout de la pile, on s'arrête
         }
     }
     
+    private void auxAfficheNext (Stack<Boids> hach){
+        Boids b = hach.pop();
+        b.moveBoid ();
+        if (!(hach.isEmpty())) {
+            auxAfficheNext (hach);
+        }
+        hach.push (b);
+    }
+    
     private void afficheNext (){
         for (int i = 0; i < longueur/rayon; i++) {
             for (int j = 0; j < hauteur/rayon; j++) {
-                auxAfficheNext (hachage[i][j], copiePile (hachage[i][j])); 
+                auxCalculeNext (hachage[i][j], copiePile (hachage[i][j])); 
+            }
+        }
+        
+        for (int i = 0; i < longueur/rayon; i++) {
+            for (int j = 0; j < hauteur/rayon; j++) {
+                auxAfficheNext (hachage[i][j]); 
             }
         }
     }

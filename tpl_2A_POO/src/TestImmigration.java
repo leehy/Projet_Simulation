@@ -16,7 +16,7 @@ public class TestImmigration {
     // si on met pas le try et le catch dans le test ca compile pas !
     
     public static void main(String[] args) {
-        Immigration jeu = new Immigration(2);
+        Immigration jeu = new Immigration(3);
         //si on voit tout noir c'est qu'il y a trop de cellules pour la taille
        try {
             jeu.setSizeSim(750, 750);
