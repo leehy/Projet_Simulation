@@ -133,6 +133,11 @@ public class BoidSimulator implements Simulable {
     return nouvellePile;
     }
     
+    
+    public GUISimulator getGui() {
+    return this.gui;
+}
+    
     private void auxAffiche (Stack<Boids> hach){    //fonction auxilliaire permettant d'afficher une pile de boids
         try {
         Boids b = hach.pop ();

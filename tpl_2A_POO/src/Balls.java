@@ -10,9 +10,12 @@ package src;
 import java.awt.Point;
 import java.util.ArrayList;
 /**
- *
+ *la class Balls extends Point et est composée de 2 ArrayList de point
+ * La LInitial permet juste de stocker en mémoire car cela est nécessaire pour certaines méthodes
+ * 
  * @author hyun
  */
+
 public class Balls extends Point{
     private ArrayList<Point> ListPoint ;
     private ArrayList<Point> LInitial ;
@@ -21,7 +24,9 @@ public class Balls extends Point{
     private ArrayList<Integer> speedCoeffX;
     private ArrayList<Integer> speedCoeffY;
     
-    
+    /**
+     *ce constructeur  permet d'initialiser une liste de balle 
+     */
     public Balls(){
         super();
         int index = 0;
