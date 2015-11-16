@@ -29,12 +29,11 @@ public class Balls extends Point{
         this.LInitial= new ArrayList<>();
         this.addBall(new Point(470,480));
         this.addBall(new Point(200,110));
-        this.addBall(new Point(80,120));
         this.addBall(new Point(10,80));
-        /*this.addBall(new Point(30,50));
+        this.addBall(new Point(30,50));
         this.addBall(new Point(400,120));
         this.addBall(new Point(10,330)); 
-        this.addBall(new Point(215,50));*/
+        this.addBall(new Point(215,50));
         this.speedCoeffX = new ArrayList<>();
         this.speedCoeffY = new ArrayList<>();
         while (this.getSizeList() != index) {
@@ -46,7 +45,16 @@ public class Balls extends Point{
     }
     
     public Balls(Balls balls){
+        super(balls);
+        int index = 0;
         this.ListPoint= balls.getListPoint();
+        this.speedCoeffX = new ArrayList<>();
+        this.speedCoeffY = new ArrayList<>();
+        while (this.getSizeList() != index) {
+            this.speedCoeffX.add(index, 1);
+            this.speedCoeffY.add(index, 1);
+            index++;
+        }
     }
     
     public void setSpeedCoeff(int index, int x, int y){
@@ -106,6 +114,7 @@ public class Balls extends Point{
         buff =buff + "La position de la balle " + index + " est (" + ListPoint.get(index).getX() + ", " + ListPoint.get(index).getY() + ") \n";
         index ++;
         }
+        System.out.println("");
         return buff;
     }
     
