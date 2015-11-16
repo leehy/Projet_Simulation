@@ -42,6 +42,8 @@ public class Boids extends Cellule {
         this.setLocalisation(x, y);
         this.vitesse.setLocation(Vx, Vy);
         this.voisins = new Stack();
+        this.vitesseProvisoire = new Point();
+        this.localisationProvisoire = new Point();
         this.tailleFenetreHauteur = tailleHauteur;
         this.tailleFenetreLongueur = tailleLongueur;
     }
@@ -211,7 +213,8 @@ public class Boids extends Cellule {
 //moveBoid permet debouger le boid.
     public void moveBoid() {
         this.vitesse = this.vitesseProvisoire;
-        this.setLocalisation(this.localisationProvisoire.getX(),this.localisationProvisoire.getY());
+        this.setLocalisation(this.localisationProvisoire.getX(),
+                this.localisationProvisoire.getY());
         this.voisins.clear(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
 
     }
