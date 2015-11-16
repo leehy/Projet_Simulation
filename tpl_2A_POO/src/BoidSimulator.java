@@ -233,7 +233,7 @@ public class BoidSimulator implements Simulable {
         //ajoute (l*9/10,h*9/10);
         //ajoute (200,225,1,1);
         ajouteLumiere (500,300,0,0);
-        ajoute (510,310,-15,-15);
+        ajoute (510,310,0,0);
         //ajoute (250,25);
         //ajoute (200,250);
         
