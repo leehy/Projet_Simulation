@@ -178,7 +178,7 @@ public class Boids extends Cellule {
                 y = this.getlocalisation().getY() - this.voisins.get(index).getlocalisation().getY();
                 //ainsi le vecteur de deplacement sera pour chaque boid dans le sens opposé de l'autre boid
                 deplacement.setLocation(deplacement.getX() + x, deplacement.getY() + y);
-            }
+               }
             index++;
         }
         return deplacement;
@@ -198,7 +198,7 @@ public class Boids extends Cellule {
         return vitesse;
     }
 
-    // la regle 3 est qu'un boid va se rapprocher de la vitesse moyenne de ses voisins.
+    //la regle 3 est qu'un boid va se rapprocher de la vitesse moyenne de ses voisins.
     //regle3 renvoie un point qui contient les valeurs de la nouvelle vitesse du boid du à cette règle
     public Point regle3() {
         Point deplacement = new Point();
@@ -217,8 +217,11 @@ public class Boids extends Cellule {
     //il faut lui envoyer une liste de voisins potentiels afin qu'il calcule les véritables voisins et ainsi que les règles puissent être appliqués    
     public void calculBoid(Stack<Boids> PileVoisinsPotentiels) {
         this.setVoisins(PileVoisinsPotentiels);
-        this.vitesseProvisoire.setLocation(this.vitesse.getX() + this.regle1().getX() + this.regle2().getX() + this.regle3().getX(),
-                this.vitesse.getY() + this.regle1().getY() + this.regle2().getY() + this.regle3().getY());
+        Point un = regle1();
+        Point deux = regle2();
+        Point trois = regle3();
+        this.vitesseProvisoire.setLocation(this.vitesse.getX() + un.getX() + deux.getX() + trois.getX(),
+                this.vitesse.getY() + un.getY() + deux.getY() + trois.getY());
         this.localisationProvisoire.setLocation(this.getlocalisation().getX() + this.vitesse.getX(),
                 this.getlocalisation().getY() + this.vitesse.getY());
         
@@ -260,7 +263,7 @@ public class Boids extends Cellule {
         this.setLocalisation(this.localisationProvisoire.getX(),
                 this.localisationProvisoire.getY());
         this.setAngle();
-        this.voisins.clear(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
+        this.voisins = new Stack(); //on réinitialise la liste de voisins à 0 pour la prochaine étape
 
     }
 
