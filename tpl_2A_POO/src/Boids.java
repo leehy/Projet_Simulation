@@ -19,7 +19,7 @@ import static java.lang.Math.atan;
  */
 public class Boids extends Cellule {
 
-    private double angle;
+    protected double angle;
     private Point vitesse;
     private Point vitesseProvisoire;
     private Point localisationProvisoire;
